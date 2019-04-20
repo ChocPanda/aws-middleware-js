@@ -1,9 +1,21 @@
 {
-  "name": "FaaS-middleware-js",
+  "name": "faas-middleware-js",
   "version": "0.0.1",
   "description": "An opinionated Middleware and lifecycle framework for build FaaS Lambdas",
   "main": "src/index.js",
   "author": "ChocPanda",
   "license": "none",
-  "private": false
+  "private": false,
+  "scripts": {
+    "build": "rollup",
+    "build:dev": "cross-env-shell NODE_ENV=development yarn build",
+    "build:prod": "cross-env-shell NODE_ENV=production yarn build",
+    "build:local": "cross-env-shell NODE_ENV=local yarn build",
+    "test": "yarn test:unit",
+    "test:unit": "jest --config=jest.unit.config.js --silent",
+    "test:integration": "jest --config=jest.integration.config.js --silent",
+    "lint": "yarn lint:test",
+    "lint:test": "eslint src/** test/**",
+    "lint:fix": "eslint --fix src/** test/**"
+  }
 }
