@@ -1,71 +1,159 @@
-const runBeforeMiddlewares = middlewares => async (event, context) =>
-  middlewares.reduce(([currEvent, currContext], middleware) => {
-    const middlewareRes = await middleware(currEvent, currContext)
-    return Array.isArray(middlewareRes)
-      ? [newEvent = currEvent, newContext = currContext] = middlewareRes
-      : [middlewareRes, currContext]
-  }, [event, context]);
+const normalizePreExecutionMiddleware = middleware => async (event, context) => {
+  const middlewareRes = await middleware(event, context);
+  const [newEvent = event, newContext = context] = Array.isArray(middlewareRes)
+    ? middlewareRes
+    : [middlewareRes, context];
+  return [newEvent, newContext];
+};
 
-const runAfterMiddlewares = middlewares => async (result, event, context) =>
-  middlewares.reduce((currResult, middleware) => await middleware(currResult, event, context), result)
+const normalizePostExecutionMiddleware = middleware => async (result, event, context) => {
+  const middlewareRes = await middleware(result, event, context);
+  const [newResult = result, newEvent = event, newContext = context] = Array.isArray(middlewareRes)
+    ? middlewareRes
+    : [middlewareRes, event, context];
+  return [newResult, newEvent, newContext];
+};
 
-const runErrorMiddlewares = middlewares => async (error, event, context) =>
-  middlewares.reduce((currResult, middleware) => await middleware(currResult, event, context), error)
-
-const createLambdaFunc = srvFunc => {
-  const {
-    init,
-    handler = srvFunc,
-    middlewares = [],
-    before = [], after = [], onError = []
-  } = srvFunc
-
-  /**
-   * Extract middlewares
-   */
-
-  const { beforeMiddlewares, afterMiddlewares, errorMiddlewares } = 
-    middlewares.reduce((
-      { beforeMiddlewares, afterMiddlewares, errorMiddlewares },
-      { before, after, onError }) => ({
-        beforeMiddlewares: before ? [...beforeMiddlewares, before] : beforeMiddlewares,
-        afterMiddlewares: after ? [...afterMiddlewares, after] : afterMiddlewares,
-        onErrorMiddlewares: error ? [...errorMiddlewares, onError] : errorMiddlewares
-      }), {
-        beforeMiddlewares: before,
-        afterMiddlewares: after,
-        onErrorMiddlewares: onError
-      })
-
-  let cachedHandler;
-  const lambdaFunc = async (event, context) => {
-    cachedHandler = cachedHandler || (cachedHandler = init ? handler(init()) : handler);
+const reduceMiddlewares = ({ errorHandler, middlewares }) => async (...args) => {
+  middlewares.reduce(async (currPromise, middleware) => {
+    const currResult = await currPromise;
     try {
-      const [modifiedEvent, modifiedContext] = await runBeforeMiddlewares(before)(event, context);
-      const result = await new Promise(resolve => {
-        resolve(cachedHandler(modifiedEvent, modifiedContext, resolve))
-      })
-      return runAfterMiddlewares(after)(result, modifiedEvent, modifiedContext);
+      return await middleware(...currResult);
     } catch (error) {
-      const errorResult = await runErrorMiddlewares(onError)(error, modifiedEvent, modifiedContext)
-      if (errorResult instanceof Error) {
-        throw errorResult;
-      }
-
-      return errorResult;
+      return errorHandler(...currResult)(error);
     }
+  }, args);
+};
+
+const traverseAndNormalize = middlewares => (
+  initBeforeMiddlewares = [],
+  initAfterMiddlewares = [],
+  initOnErrorMiddlewares = []
+) =>
+  middlewares.reduce(
+    ({ preExMiddlewares, postExMiddlewares, errorMiddlewares }, { before, after, onError }) => ({
+      preExMiddlewares: before
+        ? [...preExMiddlewares, normalizePreExecutionMiddleware(before)]
+        : preExMiddlewares,
+      postExMiddlewares: after
+        ? [...postExMiddlewares, normalizePostExecutionMiddleware(after)]
+        : postExMiddlewares,
+      errorMiddlewares: onError
+        ? [...errorMiddlewares, normalizePostExecutionMiddleware(onError)]
+        : errorMiddlewares
+    }),
+    {
+      beforeMiddlewares: initBeforeMiddlewares,
+      afterMiddlewares: initAfterMiddlewares,
+      onErrorMiddlewares: initOnErrorMiddlewares
+    }
+  );
+
+const createErrorHandler = errorMiddlewares => (event, context) => async error => {
+  const errorResult = await reduceMiddlewares({
+    middlewares: errorMiddlewares,
+    errorHandler: err => {
+      throw err;
+    }
+  })(error, event, context);
+
+  if (errorResult instanceof Error) {
+    throw errorResult;
   }
 
-  lambdaFunc.use = ({ before, after, onError }) => createLambdaFunc({
-    init,
-    handler,
-    middlewares: [],
-    before: before ? [...beforeMiddlewares, before] : beforeMiddlewares,
-    after: after ? [...afterMiddlewares, after] : afterMiddlewares,
-    onError: error ? [...errorMiddlewares, onError] : errorMiddlewares
-  })
+  return errorResult;
+};
+
+const createLambdaFunc = ({
+  init,
+  handler,
+  middlewares,
+  before = [],
+  after = [],
+  onError = []
+}) => {
+  const { preExMiddlewares, postExMiddlewares, errorMiddlewares } = traverseAndNormalize(
+    middlewares
+  )(before, after, onError);
+
+  const errorHandler = createErrorHandler(errorMiddlewares);
+
+  let cachedHandler;
+
+  const lambdaFunc = async (event, context, callback) => {
+    cachedHandler = cachedHandler || (cachedHandler = init ? handler(init()) : handler);
+
+    const beforeResult = await reduceMiddlewares({
+      middlewares: preExMiddlewares,
+      errorHandler
+    })(event, context);
+
+    /**
+     * The pre-execution middlewares return an array of the event and context
+     * in shape [modifiedEvent, modifiedContext]
+     *
+     * If an error occurred whilst executing the pre-execution middlewares then
+     * the error handling middlewares will have been executed, these return an
+     * array with the new result at the head of the array and the event and
+     * context parameters passed to the middleware that threw the exception.
+     *
+     * If the error handling middlewares failed to normalize the result from the
+     * error (fail to return a non-error object), then the error handler will have
+     * re-thrown the resultant error.
+     *
+     * Todo find a less cryptic way of expressing this
+     */
+    if (beforeResult.length > 2) {
+      return beforeResult[0];
+    }
+
+    const [modifiedEvent, modifiedContext] = beforeResult;
+
+    /**
+     * AWS provides a flexible API for the authors of lambdas:
+     * https://docs.aws.amazon.com/lambda/latest/dg/nodejs-prog-model-handler.html,
+     *
+     * One can return the result of the execution from the handler function,
+     * a promise of the result or pass the result to the callback provided.
+     *
+     * The callbackFlag indicates whether the handler function being wrapped in
+     * middleware exitted by calling the callback or returned a value. The middleware
+     * will use the flag to behave in the same way.
+     */
+    const { callbackFlag = false, ...result } = await new Promise(resolve =>
+      resolve(
+        cachedHandler(modifiedEvent, modifiedContext, res =>
+          resolve({ callbackFlag: true, ...res })
+        )
+      )
+    );
+
+    const [modifiedResult] = await reduceMiddlewares({
+      middlewares: postExMiddlewares,
+      errorHandler
+    })(result, modifiedEvent, modifiedContext);
+
+    if (callbackFlag) {
+      return callback(modifiedResult);
+    }
+
+    return modifiedResult;
+  };
+
+  lambdaFunc.use = newMiddlewares =>
+    createLambdaFunc({
+      init,
+      handler,
+      middlewares: Array.isArray(newMiddlewares) ? newMiddlewares : [newMiddlewares],
+      before: preExMiddlewares,
+      after: postExMiddlewares,
+      onError: errorMiddlewares
+    });
 
   return lambdaFunc;
-}
+};
 
-module.exports = createLambdaFunc
+module.exports = srvFunc => {
+  const { init, handler = srvFunc, middlewares = [] } = srvFunc;
+  return createLambdaFunc({ init, handler, middlewares });
+};
