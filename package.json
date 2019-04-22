@@ -8,17 +8,14 @@
   "private": false,
   "scripts": {
     "build": "rollup",
-    "build:dev": "cross-env-shell NODE_ENV=development yarn build",
-    "build:prod": "cross-env-shell NODE_ENV=production yarn build",
-    "build:local": "cross-env-shell NODE_ENV=local yarn build",
-    "test": "yarn test:unit",
-    "test:unit": "jest --config=jest.unit.config.js --silent",
-    "test:integration": "jest --config=jest.integration.config.js --silent",
-    "lint": "yarn lint:test",
+    "test": "npm test:unit",
+    "test:unit": "ava",
+    "lint": "npm lint:test",
     "lint:test": "eslint src/** test/**",
     "lint:fix": "eslint --fix src/** test/**"
   },
   "devDependencies": {
+    "ava": "^1.4.1",
     "eslint": "^5.3.0",
     "eslint-config-airbnb-base": "^13.1.0",
     "eslint-config-prettier": "^4.1.0",
@@ -26,5 +23,6 @@
     "eslint-plugin-import": "^2.14.0",
     "eslint-plugin-prettier": "^3.0.1",
     "prettier": "^1.17.0"
-  }
+  },
+  "dependencies": {}
 }
