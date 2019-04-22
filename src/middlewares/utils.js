@@ -14,7 +14,7 @@ const normalizePostExecutionMiddleware = middleware => async (result, event, con
   return [newResult, newEvent, newContext];
 };
 
-const reduceMiddlewares = ({ errorHandler, middlewares }) => async (...args) => {
+const reduceMiddlewares = ({ errorHandler, middlewares }) => async (...args) =>
   middlewares.reduce(async (currPromise, middleware) => {
     const currResult = await currPromise;
     try {
@@ -23,7 +23,6 @@ const reduceMiddlewares = ({ errorHandler, middlewares }) => async (...args) => 
       return errorHandler(...currResult)(error);
     }
   }, args);
-};
 
 module.exports.normalizePreExecutionMiddleware = normalizePreExecutionMiddleware;
 module.exports.normalizePostExecutionMiddleware = normalizePostExecutionMiddleware;
