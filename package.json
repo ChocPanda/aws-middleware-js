@@ -11,11 +11,11 @@
     "test": "yarn run test:unit",
     "test:unit": "nyc ava",
     "test:cov": "nyc report",
-    "test:report": "yarn run test:unit --tap | tap-xunit > ./reports/ava.xml",
+    "test:report": "yarn run test:unit --tap | tap-xunit > ./reports/ava-test-results.xml",
     "lint": "yarn lint:test",
     "lint:test": "eslint src/**",
     "lint:fix": "eslint --fix src/**",
-    "lint:report": "yarn run lint:test --format junit --output-file ./reports/eslint.xml"
+    "lint:report": "yarn run lint:test --format junit --output-file ./reports/eslint-test-results.xml"
   },
   "devDependencies": {
     "ava": "^1.4.1",

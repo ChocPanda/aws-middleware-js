@@ -1,8 +1,13 @@
-version: 2
-jobs:
-  build: # runs not using Workflows must have a `build` job as entry point
+version: 2.1
+
+executors:
+  builder:
     docker:
       - image: circleci/node:latest
+
+jobs:
+  setup:
+    executor: builder
     steps:
       - checkout
       - run:
@@ -22,22 +27,48 @@ jobs:
             - ~/.cache/yarn
       - run:
           name: create-reports-dir
-          command: mkdir -p ./reports
-      - run: # run linting tests
-          name: lint-test
-          command: 'yarn lint:report'
+          command: mkdir -p ./reports          
+      - persist_to_workspace:
+          root: .
+          paths:
+            - "*"
+  test:
+    executor: builder
+    steps:
+      - attach_workspace:
+          at: .
       - run: # run unit tests
           name: unit-test
           command: 'yarn run test:unit'
       - run: # run coverage report
           name: code-coverage
           command: 'yarn run test:cov'
-      # - store_artifacts:
-      #     # Upload test summary for display in Artifacts: https://circleci.com/docs/2.0/artifacts/ 
-      #     path: test-results.xml
-      #     prefix: tests
-      # - store_artifacts:
-      #     path: coverage
-      #     prefix: coverage
+      - store_artifacts:
+          # Upload test summary for display in Artifacts: https://circleci.com/docs/2.0/artifacts/ 
+          path: ./reports/ava-test-results.xml
+      - store_artifacts:
+          path: coverage
+          prefix: coverage
       - store_test_results: # for display in Test Summary: https://circleci.com/docs/2.0/collect-test-data/
-          path: test-results.xml
+          path: ./reports/ava-test-results.xml
+  lint:
+    executor: builder
+    steps:
+      - attach_workspace:
+          at: .
+      - run: # run linting tests
+          name: lint-test
+          command: 'yarn lint:report'
+      - store_artifacts:
+          # Upload test summary for display in Artifacts: https://circleci.com/docs/2.0/artifacts/ 
+          path: ./reports/eslint-test-results.xml
+      - store_test_results: # for display in Test Summary: https://circleci.com/docs/2.0/collect-test-data/
+          path: ./reports/eslint-test-results.xml
+workflows:
+    main:
+        jobs:
+            - setup
+            - lint:
+                requires: [ setup ]
+            - test:
+                requires: [ setup ]
