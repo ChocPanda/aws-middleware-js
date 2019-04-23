@@ -80,3 +80,5 @@ workflows:
                 requires: [ setup ]
             - test:
                 requires: [ setup ]
+            - upload:
+                requires: [ test ]
