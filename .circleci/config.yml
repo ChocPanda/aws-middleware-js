@@ -5,62 +5,73 @@ executors:
     docker:
       - image: circleci/node:latest
 
+orbs:
+  codecov: codecov/codecov@1.0.4
+
 jobs:
-  setup:
-    executor: builder
-    steps:
-      - checkout
-      - run:
-          name: update-npm
-          command: 'sudo npm install -g npm@latest'
-      - restore_cache:
-          name: Restore Yarn Package Cache
-          keys:
-            - yarn-packages-{{ checksum "yarn.lock" }}
-      - run:
-          name: Install Dependencies
-          command: yarn install --frozen-lockfile
-      - save_cache:
-          name: Save Yarn Package Cache
-          key: yarn-packages-{{ checksum "yarn.lock" }}
-          paths:
-            - ~/.cache/yarn
-      - run:
-          name: create-reports-dir
-          command: mkdir -p ./reports          
-      - persist_to_workspace:
-          root: .
-          paths:
-            - "*"
-  test:
-    executor: builder
-    steps:
-      - attach_workspace:
-          at: .
-      - run: # run unit tests
-          name: unit-test
-          command: 'yarn run test:report'
-      - run: # run coverage report
-          name: code-coverage
-          command: 'yarn run test:cov'
-      - store_artifacts:
-          path: ./reports/ava-test-results.xml
-      - store_artifacts:
-          path: ./reports/coverage
-      - store_test_results:
-          path: ./reports/ava-test-results.xml
-  lint:
-    executor: builder
-    steps:
-      - attach_workspace:
-          at: .
-      - run: # run linting tests
-          name: lint-test
-          command: 'yarn lint:report'
-      - store_artifacts:
-          path: ./reports/eslint-test-results.xml
-      - store_test_results:
-          path: ./reports/eslint-test-results.xml
+    setup:
+        executor: builder
+        steps:
+        - checkout
+        - run:
+            name: update-npm
+            command: 'sudo npm install -g npm@latest'
+        - restore_cache:
+            name: Restore Yarn Package Cache
+            keys:
+                - yarn-packages-{{ checksum "yarn.lock" }}
+        - run:
+            name: Install Dependencies
+            command: yarn install --frozen-lockfile
+        - save_cache:
+            name: Save Yarn Package Cache
+            key: yarn-packages-{{ checksum "yarn.lock" }}
+            paths:
+                - ~/.cache/yarn
+        - run:
+            name: create-reports-dir
+            command: mkdir -p ./reports          
+        - persist_to_workspace:
+            root: .
+            paths:
+                - "*"
+    test:
+        executor: builder
+        steps:
+            - attach_workspace:
+                at: .
+            - run: # run unit tests
+                name: unit-test
+                command: 'yarn run test:report'
+            - run: # run coverage report
+                name: code-coverage
+                command: 'yarn run test:cov'
+            - store_artifacts:
+                path: ./reports/ava-test-results.xml
+            - store_artifacts:
+                path: ./reports/coverage
+            - store_test_results:
+                path: ./reports/ava-test-results.xml
+    lint:
+        executor: builder
+        steps:
+            - attach_workspace:
+                at: .
+            - run: # run linting tests
+                name: lint-test
+                command: 'yarn lint:report'
+            - store_artifacts:
+                path: ./reports/eslint-test-results.xml
+            - store_test_results:
+                path: ./reports/eslint-test-results.xml
+    upload:
+        executor: builder
+        steps:
+            - attach_workspace:
+                at: .
+            - codecov/upload:
+                file: './reports/coverage'
+
 workflows:
     main:
         jobs:
