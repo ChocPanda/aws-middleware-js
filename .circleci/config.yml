@@ -44,12 +44,11 @@ jobs:
           name: code-coverage
           command: 'yarn run test:cov'
       - store_artifacts:
-          # Upload test summary for display in Artifacts: https://circleci.com/docs/2.0/artifacts/ 
           path: ./reports/ava-test-results.xml
       - store_artifacts:
           path: coverage
           prefix: coverage
-      - store_test_results: # for display in Test Summary: https://circleci.com/docs/2.0/collect-test-data/
+      - store_test_results:
           path: ./reports/ava-test-results.xml
   lint:
     executor: builder
@@ -60,9 +59,8 @@ jobs:
           name: lint-test
           command: 'yarn lint:report'
       - store_artifacts:
-          # Upload test summary for display in Artifacts: https://circleci.com/docs/2.0/artifacts/ 
           path: ./reports/eslint-test-results.xml
-      - store_test_results: # for display in Test Summary: https://circleci.com/docs/2.0/collect-test-data/
+      - store_test_results:
           path: ./reports/eslint-test-results.xml
 workflows:
     main:
