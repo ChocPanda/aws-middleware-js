@@ -52,6 +52,8 @@ jobs:
                 path: ./reports/coverage
             - store_test_results:
                 path: ./reports/ava-test-results.xml
+            - codecov/upload:
+                file: './reports/coverage/lcov.info'
     lint:
         executor: builder
         steps:
@@ -64,13 +66,6 @@ jobs:
                 path: ./reports/eslint-test-results.xml
             - store_test_results:
                 path: ./reports/eslint-test-results.xml
-    upload-coverage:
-        executor: builder
-        steps:
-            - attach_workspace:
-                at: .
-            - codecov/upload:
-                file: './reports/coverage/lcov.info'
 
 workflows:
     main:
@@ -80,5 +75,3 @@ workflows:
                 requires: [ setup ]
             - test:
                 requires: [ setup ]
-            - upload-coverage:
-                requires: [ test ]
