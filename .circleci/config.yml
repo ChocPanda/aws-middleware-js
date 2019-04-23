@@ -46,8 +46,7 @@ jobs:
       - store_artifacts:
           path: ./reports/ava-test-results.xml
       - store_artifacts:
-          path: coverage
-          prefix: coverage
+          path: ./reports/coverage
       - store_test_results:
           path: ./reports/ava-test-results.xml
   lint:

@@ -16,5 +16,5 @@ module.exports = {
   reporter: ['lcov', 'text-summary'],
   cache: true,
   all: true,
-  'report-dir': './reports'
+  'report-dir': './reports/coverage'
 };
