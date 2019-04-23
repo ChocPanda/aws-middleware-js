@@ -35,6 +35,7 @@ jobs:
             root: .
             paths:
                 - "*"
+
     test:
         executor: builder
         steps:
@@ -47,13 +48,14 @@ jobs:
                 name: code-coverage
                 command: 'yarn run test:cov'
             - store_artifacts:
-                path: ./reports/ava-test-results.xml
+                path: ./reports/ava/test-results.xml
             - store_artifacts:
                 path: ./reports/coverage
             - store_test_results:
-                path: ./reports/ava-test-results.xml
+                path: ./reports/ava/test-results.xml
             - codecov/upload:
                 file: './reports/coverage/lcov.info'
+
     lint:
         executor: builder
         steps:
@@ -63,9 +65,9 @@ jobs:
                 name: lint-test
                 command: 'yarn lint:report'
             - store_artifacts:
-                path: ./reports/eslint-test-results.xml
+                path: ./reports/eslint/test-results.xml
             - store_test_results:
-                path: ./reports/eslint-test-results.xml
+                path: ./reports/eslint/test-results.xml
 
 workflows:
     main:
