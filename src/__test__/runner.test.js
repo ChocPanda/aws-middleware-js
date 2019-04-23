@@ -13,7 +13,7 @@ test.todo('Works without an init function');
 test.todo('Executes pre-execution middlewares');
 test.todo('Executes handles exceptions from pre-execution middlewares');
 test.todo('Executes post-execution middlewares');
-test.todo('Executes handles exceptions from pre-execution middlewares');
+test.todo('Executes handles exceptions from post-execution middlewares');
 test.todo('Executes error handling middlewares');
 
 /**
