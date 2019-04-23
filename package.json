@@ -11,7 +11,7 @@
     "test": "yarn run test:unit",
     "test:unit": "nyc ava",
     "test:cov": "nyc report",
-    "test:report": "yarn run test:unit --tap | tap-junit > ./reports/ava-test-results.xml",
+    "test:report": "yarn run test:unit --tap | tap-junit --output ./reports/ava-test-results.xml",
     "lint": "yarn lint:test",
     "lint:test": "eslint src/**",
     "lint:fix": "eslint --fix src/**",
