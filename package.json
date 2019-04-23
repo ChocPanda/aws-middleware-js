@@ -4,16 +4,18 @@
   "description": "An opinionated Middleware and lifecycle framework for build FaaS Lambdas",
   "main": "src/index.js",
   "author": "ChocPanda",
-  "license": "none",
+  "license": "MIT",
   "private": false,
   "scripts": {
     "build": "rollup",
-    "test": "yarn run-script test:unit",
+    "test": "yarn run test:unit",
     "test:unit": "nyc ava",
-    "test:cov": "nyc report --reporter=lcov",
+    "test:cov": "nyc report",
+    "test:report": "yarn run test:unit --tap | tap-xunit > ./reports/ava.xml",
     "lint": "yarn lint:test",
     "lint:test": "eslint src/**",
-    "lint:fix": "eslint --fix src/**"
+    "lint:fix": "eslint --fix src/**",
+    "lint:report": "yarn run lint:test --format junit --output-file ./reports/eslint.xml"
   },
   "devDependencies": {
     "ava": "^1.4.1",
@@ -26,7 +28,8 @@
     "eslint-plugin-prettier": "^3.0.1",
     "ninos": "^2.0.2",
     "nyc": "^14.0.0",
-    "prettier": "^1.17.0"
+    "prettier": "^1.17.0",
+    "tap-xunit": "^2.3.0"
   },
   "dependencies": {}
 }

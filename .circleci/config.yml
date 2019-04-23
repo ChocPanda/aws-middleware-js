@@ -20,6 +20,9 @@ jobs:
           key: yarn-packages-{{ checksum "yarn.lock" }}
           paths:
             - ~/.cache/yarn
+      - run:
+          name: create-reports-dir
+          command: mkdir -p ./reports
       - run: # run linting tests
           name: lint-test
           command: 
