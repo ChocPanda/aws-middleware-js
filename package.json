@@ -8,9 +8,10 @@
   "private": false,
   "scripts": {
     "build": "rollup",
-    "test": "npm run-script test:unit",
-    "test:unit": "ava",
-    "lint": "npm lint:test",
+    "test": "yarn run-script test:unit",
+    "test:unit": "nyc ava",
+    "test:cov": "nyc report --reporter=lcov",
+    "lint": "yarn lint:test",
     "lint:test": "eslint src/**",
     "lint:fix": "eslint --fix src/**"
   },
@@ -24,6 +25,7 @@
     "eslint-plugin-import": "^2.14.0",
     "eslint-plugin-prettier": "^3.0.1",
     "ninos": "^2.0.2",
+    "nyc": "^14.0.0",
     "prettier": "^1.17.0"
   },
   "dependencies": {}
