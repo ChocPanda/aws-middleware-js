@@ -64,7 +64,7 @@ jobs:
                 path: ./reports/eslint-test-results.xml
             - store_test_results:
                 path: ./reports/eslint-test-results.xml
-    upload:
+    upload-coverage:
         executor: builder
         steps:
             - attach_workspace:
@@ -80,5 +80,5 @@ workflows:
                 requires: [ setup ]
             - test:
                 requires: [ setup ]
-            - upload:
+            - upload-coverage:
                 requires: [ test ]
