@@ -70,7 +70,7 @@ jobs:
             - attach_workspace:
                 at: .
             - codecov/upload:
-                file: './reports/coverage/*'
+                file: './reports/coverage/lcov.info'
 
 workflows:
     main:
