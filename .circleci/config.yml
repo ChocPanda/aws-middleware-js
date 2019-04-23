@@ -9,21 +9,26 @@ jobs:
           name: update-npm
           command: 'sudo npm install -g npm@latest'
       - restore_cache:
-          # Read about caching dependencies: https://circleci.com/docs/2.0/caching/
-          key: dependency-cache-{{ checksum "package.json" }}
+          name: Restore Yarn Package Cache
+          keys:
+            - yarn-packages-{{ checksum "yarn.lock" }}
       - run:
-          name: install-npm-wee
-          command: npm install
+          name: Install Dependencies
+          command: yarn install --frozen-lockfile
       - save_cache:
-          key: dependency-cache-{{ checksum "package.json" }}
+          name: Save Yarn Package Cache
+          key: yarn-packages-{{ checksum "yarn.lock" }}
           paths:
-            - ./node_modules
-      - run: # run tests
-          name: test
-          command: npm test
-      # - run: # run coverage report
-      #     name: code-coverage
-      #     command: './node_modules/.bin/nyc report --reporter=text-lcov'
+            - ~/.cache/yarn
+      - run: # run linting tests
+          name: lint-test
+          command: 
+      - run: # run unit tests
+          name: unit-test
+          command: 'yarn run test:unit'
+      - run: # run coverage report
+          name: code-coverage
+          command: 'yarn run test:cov'
       # - store_artifacts:
       #     # Upload test summary for display in Artifacts: https://circleci.com/docs/2.0/artifacts/ 
       #     path: test-results.xml
@@ -31,5 +36,5 @@ jobs:
       # - store_artifacts:
       #     path: coverage
       #     prefix: coverage
-      # - store_test_results: # for display in Test Summary: https://circleci.com/docs/2.0/collect-test-data/
-      #     path: test-results.xml
+      - store_test_results: # for display in Test Summary: https://circleci.com/docs/2.0/collect-test-data/
+          path: test-results.xml
