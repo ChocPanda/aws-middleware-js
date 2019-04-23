@@ -39,7 +39,7 @@ jobs:
           at: .
       - run: # run unit tests
           name: unit-test
-          command: 'yarn run test:unit'
+          command: 'yarn run test:report'
       - run: # run coverage report
           name: code-coverage
           command: 'yarn run test:cov'
