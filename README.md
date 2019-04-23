@@ -2,6 +2,8 @@
 
 # AWS-MIDDLEWARE-JS
 
+[![CircleCI](https://circleci.com/gh/ChocPanda/aws-middleware-js.svg?style=svg)](https://circleci.com/gh/ChocPanda/aws-middleware-js)
+
 An opinionated Middleware and lifecycle framework for building service functions such as AWS lambda functions. 
 
 ## Inspiration
