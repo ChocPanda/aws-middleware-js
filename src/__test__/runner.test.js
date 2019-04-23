@@ -28,4 +28,6 @@ test.todo('Proxies returned promise wrapping with Post-Execution middlewares', t
 test.todo('Adds the new middleware before component to the beforeMiddlewares', t => t.pass());
 test.todo('Adds the new middleware after component to the afterMiddlewares', t => t.pass());
 test.todo('Adds the new middleware error component to the errorMiddlewares', t => t.pass());
-test.todo('Adds the all the new middleware components to the correct parts of the lifecycle', t => t.pass());
+test.todo('Adds the all the new middleware components to the correct parts of the lifecycle', t =>
+  t.pass()
+);
