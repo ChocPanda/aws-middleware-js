@@ -25,7 +25,7 @@ jobs:
           command: mkdir -p ./reports
       - run: # run linting tests
           name: lint-test
-          command: 
+          command: 'yarn lint:report'
       - run: # run unit tests
           name: unit-test
           command: 'yarn run test:unit'
