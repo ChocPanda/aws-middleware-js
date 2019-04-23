@@ -15,7 +15,7 @@
     "lint": "yarn lint:test",
     "lint:test": "eslint src/**",
     "lint:fix": "eslint --fix src/**",
-    "lint:report": "yarn run lint:test --format junit --output-file ./reports/eslint-test-results.xml"
+    "lint:report": "yarn run lint:test --format=junit --output-file ./reports/eslint-test-results.xml"
   },
   "devDependencies": {
     "ava": "^1.4.1",
