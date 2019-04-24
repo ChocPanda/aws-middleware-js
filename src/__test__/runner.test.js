@@ -27,6 +27,6 @@ test.skip('Proxies returned promise wrapping with Post-Execution middlewares', t
  */
 test.skip('Adds the new middleware before component to the beforeMiddlewares', t => t.pass());
 test.skip('Adds the new middleware after component to the afterMiddlewares', t => t.pass());
-test.skip('Adds the new middleware error component to the errorMiddlewares', t => t.pass())
+test.skip('Adds the new middleware error component to the errorMiddlewares', t => t.pass());
 test.skip('Adds the all the new middleware components to the correct parts of the lifecycle', t =>
   t.pass());
