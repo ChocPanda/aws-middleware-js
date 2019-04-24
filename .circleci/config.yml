@@ -48,11 +48,9 @@ jobs:
                 name: code-coverage
                 command: 'yarn run test:cov'
             - store_artifacts:
-                path: ./reports/ava/test-results.xml
-            - store_artifacts:
-                path: ./reports/coverage
+                path: ./reports
             - store_test_results:
-                path: ./reports/ava/test-results.xml
+                path: ./reports
             - codecov/upload:
                 file: './reports/coverage/lcov.info'
 
@@ -65,9 +63,9 @@ jobs:
                 name: lint-test
                 command: 'yarn lint:report'
             - store_artifacts:
-                path: ./reports/eslint/test-results.xml
+                path: ./reports
             - store_test_results:
-                path: ./reports/eslint/test-results.xml
+                path: ./reports
 
 workflows:
     main:
