@@ -36,11 +36,20 @@ const createErrorHandler = errorMiddlewares => (event, context) => async error =
     }
   })(error, event, context);
 
-  if (errorResult instanceof Error) {
-    throw errorResult;
+  if (errorResult[0] instanceof Error) {
+    throw errorResult[0];
   }
 
   return errorResult;
+};
+
+const normalizeHandlerResult = handlerResult => {
+  if (typeof handlerResult === 'object') {
+    const { callbackFlag = false, ...result } = handlerResult;
+    return [callbackFlag, result];
+  }
+
+  return [false, handlerResult];
 };
 
 const createLambdaFunc = ({
@@ -99,7 +108,7 @@ const createLambdaFunc = ({
      * middleware exitted by calling the callback or returned a value. The middleware
      * will use the flag to behave in the same way.
      */
-    const handlerResponse = await new Promise(resolve =>
+    const handlerResult = await new Promise(resolve =>
       resolve(
         cachedHandler(modifiedEvent, modifiedContext, res =>
           resolve({ callbackFlag: true, ...res })
@@ -107,8 +116,7 @@ const createLambdaFunc = ({
       )
     );
 
-    const { callbackFlag, ...result } = handlerResponse || { callbackFlag: false };
-
+    const [callbackFlag, result] = normalizeHandlerResult(handlerResult);
     const [modifiedResult] = await reduceMiddlewares({
       middlewares: postExMiddlewares,
       errorHandler

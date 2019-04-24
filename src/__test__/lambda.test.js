@@ -41,7 +41,7 @@ test('Wrapped lambda function - should cache the result of the init function', a
   t.snapshot(stubHandler.calls);
 });
 
-test('Wrapped lambda function - Does not require an init function', async t => {
+test('Wrapped lambda function - does not require an init function', async t => {
   const stubHandler = t.context.stub();
   const stubCallback = t.context.stub();
 
@@ -66,22 +66,177 @@ test('Wrapped lambda function - accepts a function parameter', async t => {
 /**
  * The Wrapped lambda function - Middlewares
  */
-test.todo('Wrapped lambda function - should execute pre-execution middlewares');
-test.todo('Wrapped lambda function - should handles exceptions from pre-execution middlewares');
-test.todo('Wrapped lambda function - should execute post-execution middlewares');
-test.todo('Wrapped lambda function - should handles exceptions from post-execution middlewares');
-test.todo('Wrapped lambda function - should execute error handling middlewares');
+[1, 3].forEach(numMiddlewares =>
+  test(`Wrapped lambda function - should execute ${numMiddlewares} pre-execution middlewares and the handler`, async t => {
+    const stubHandler = t.context.stub();
+    const stubCallback = t.context.stub();
+    const stubMiddlewares = Array.from({ length: numMiddlewares }, () => ({
+      before: t.context.stub()
+    }));
+
+    const lambdaFunc = lambda({ handler: stubHandler, middlewares: stubMiddlewares });
+
+    await lambdaFunc('event', 'context', stubCallback);
+
+    stubMiddlewares.forEach(({ before }) => t.snapshot(before.calls));
+    t.snapshot(stubHandler.calls);
+  })
+);
+
+test('Wrapped lambda function - should rethrow exceptions from pre-execution middlewares if there are no error handlers', async t => {
+  const stubHandler = t.context.stub();
+  const stubCallback = t.context.stub();
+  const stubMiddlewares = [
+    {
+      before: () => {
+        throw new Error();
+      }
+    }
+  ];
+
+  const lambdaFunc = lambda({ handler: stubHandler, middlewares: stubMiddlewares });
+
+  await t.throwsAsync(lambdaFunc('event', 'context', stubCallback), {
+    instanceOf: Error,
+    message: ''
+  });
+
+  t.deepEqual(stubHandler.calls, []);
+});
+
+test('Wrapped lambda function - should rethrow exceptions from pre-execution middlewares if the error handler fails', async t => {
+  const stubHandler = t.context.stub();
+  const stubCallback = t.context.stub();
+  const stubMiddlewares = [
+    {
+      before: () => {
+        throw new Error();
+      },
+      onError: error => error
+    }
+  ];
+
+  const lambdaFunc = lambda({ handler: stubHandler, middlewares: stubMiddlewares });
+
+  await t.throwsAsync(lambdaFunc('event', 'context', stubCallback), {
+    instanceOf: Error,
+    message: ''
+  });
+
+  t.deepEqual(stubHandler.calls, []);
+});
+
+test('Wrapped lambda function - should handle exceptions from pre-execution middlewares with error handling middleware', async t => {
+  const stubHandler = t.context.stub();
+  const stubCallback = t.context.stub();
+  const stubMiddlewares = [
+    {
+      before: () => {
+        throw new Error();
+      },
+      onError: () => 'some new result'
+    }
+  ];
+
+  const lambdaFunc = lambda({ handler: stubHandler, middlewares: stubMiddlewares });
+  const result = await lambdaFunc('event', 'context', stubCallback);
+
+  t.is(result, 'some new result');
+  t.deepEqual(stubHandler.calls, []);
+});
+
+[1, 3].forEach(numMiddlewares =>
+  test(`Wrapped lambda function - should execute ${numMiddlewares} post-execution middlewares and the handler`, async t => {
+    const stubHandler = t.context.stub(() => 'result');
+    const stubCallback = t.context.stub();
+    const stubMiddlewares = Array.from({ length: numMiddlewares }, () => ({
+      after: t.context.stub()
+    }));
+
+    const lambdaFunc = lambda({ handler: stubHandler, middlewares: stubMiddlewares });
+
+    await lambdaFunc('event', 'context', stubCallback);
+
+    stubMiddlewares.forEach(({ after }) => t.snapshot(after.calls));
+    t.snapshot(stubHandler.calls);
+  })
+);
+
+test('Wrapped lambda function - should rethrow exceptions from post-execution middlewares if there are no error handlers', async t => {
+  const stubHandler = t.context.stub(() => 'result');
+  const stubCallback = t.context.stub();
+  const stubMiddlewares = [
+    {
+      after: () => {
+        throw new Error();
+      }
+    }
+  ];
+
+  const lambdaFunc = lambda({ handler: stubHandler, middlewares: stubMiddlewares });
+
+  await t.throwsAsync(lambdaFunc('event', 'context', stubCallback), {
+    instanceOf: Error,
+    message: ''
+  });
+
+  t.snapshot(stubHandler.calls);
+});
+
+test('Wrapped lambda function - should rethrow exceptions from post-execution middlewares if the error handler fails', async t => {
+  const stubHandler = t.context.stub(() => 'result');
+  const stubCallback = t.context.stub();
+  const stubMiddlewares = [
+    {
+      after: () => {
+        throw new Error();
+      },
+      onError: error => error
+    }
+  ];
+
+  const lambdaFunc = lambda({ handler: stubHandler, middlewares: stubMiddlewares });
+
+  await t.throwsAsync(lambdaFunc('event', 'context', stubCallback), {
+    instanceOf: Error,
+    message: ''
+  });
+
+  t.snapshot(stubHandler.calls);
+});
+
+test('Wrapped lambda function - should handle exceptions from post-execution middlewares with error handling middleware', async t => {
+  const stubHandler = t.context.stub(() => 'result');
+  const stubCallback = t.context.stub();
+  const stubMiddlewares = [
+    {
+      after: () => {
+        throw new Error();
+      },
+      onError: () => 'some new result'
+    }
+  ];
+
+  const lambdaFunc = lambda({ handler: stubHandler, middlewares: stubMiddlewares });
+  const result = await lambdaFunc('event', 'context', stubCallback);
+
+  t.is(result, 'some new result');
+  t.snapshot(stubHandler.calls);
+});
 
 /**
  * The Wrapped lambda function - Invoke
  */
-test.todo('Proxies lambda callback wrapping with Post-Execution middlewares');
-test.todo('Proxies returned promise wrapping with Post-Execution middlewares');
+test.todo('Wrapped lambda function - proxies lambda callback wrapping with Post-Execution middlewares');
+test.todo('Wrapped lambda function - proxies returned promise wrapping with Post-Execution middlewares');
+test.todo('Wrapped lambda function - should rethrow exceptions from thrown by the handler if there are no error handlers');
+test.todo('Wrapped lambda function - should rethrow exceptions from thrown by the handler if the error handler fails');
+test.todo('Wrapped lambda function - should handle exceptions from thrown by the handler with error handling middleware');
 
 /**
  * The Wrapped lambda function - Use
  */
-test.todo('Adds the new middleware before component to the beforeMiddlewares');
-test.todo('Adds the new middleware after component to the afterMiddlewares');
-test.todo('Adds the new middleware error component to the errorMiddlewares');
-test.todo('Adds the all the new middleware components to the correct parts of the lifecycle');
+test.todo('Wrapped lambda function - should add the new middleware before component to the beforeMiddlewares');
+test.todo('Wrapped lambda function - should add the new middleware after component to the afterMiddlewares');
+test.todo('Wrapped lambda function - should add the new middleware error component to the errorMiddlewares');
+test.todo('Wrapped lambda function - should add all the new middleware components to the correct parts of the lifecycle');
