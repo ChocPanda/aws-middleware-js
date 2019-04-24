@@ -17,7 +17,7 @@ const preExecutionTestMacro = async (t, middleware, expectedEvent, expectedConte
 };
 
 preExecutionTestMacro.title = inputDesc =>
-  `Pre-Execution middlewares returning ${inputDesc} should be normalized to return an array with the event and context`;
+  `Pre-Execution middlewares returning - ${inputDesc} - should be normalized to return an array with the event and context`;
 
 [
   {
@@ -67,7 +67,7 @@ const postExecutionTestMacro = async (
 };
 
 postExecutionTestMacro.title = inputDesc =>
-  `Post-Execution middlewares returning ${inputDesc} should be normalized to return an array with the result, event and context`;
+  `Post-Execution middlewares - returning ${inputDesc} - should be normalized to return an array with the result, event and context`;
 
 [
   {
@@ -152,7 +152,7 @@ testIdentityMiddlewares
   }))
   .forEach(({ numMiddlewares, createMiddlewares, normalizer }) =>
     test(
-      `Reduce middlewares should execute all Pre-Execution Middlewares when there are ${numMiddlewares} middlewares`,
+      `Reduce middlewares - should execute all Pre-Execution Middlewares when there are ${numMiddlewares} middlewares`,
       executeAllMiddlewaresTestMacro,
       createMiddlewares,
       normalizer,
@@ -167,7 +167,7 @@ testIdentityMiddlewares
   }))
   .forEach(({ numMiddlewares, createMiddlewares, normalizer }) =>
     test(
-      `Reduce middlewares should execute all Post-Execution Middlewares when there are ${numMiddlewares} middlewares`,
+      `Reduce middlewares - should execute all Post-Execution Middlewares when there are ${numMiddlewares} middlewares`,
       executeAllMiddlewaresTestMacro,
       createMiddlewares,
       normalizer,
@@ -196,14 +196,14 @@ const executionOrderTestMacro = async (t, normalizer, args) => {
 };
 
 test(
-  'Reduce middlewares should execute all Pre-Execution Middlewares in order',
+  'Reduce middlewares - should execute all Pre-Execution Middlewares in order',
   executionOrderTestMacro,
   normalizePreExecutionMiddleware,
   ['event', 'context']
 );
 
 test(
-  'Reduce middlewares should execute all Post-Execution Middlewares in order',
+  'Reduce middlewares - should execute all Post-Execution Middlewares in order',
   executionOrderTestMacro,
   normalizePostExecutionMiddleware,
   ['result', 'event', 'context']
