@@ -227,16 +227,92 @@ test('Wrapped lambda function - should handle exceptions from post-execution mid
 /**
  * The Wrapped lambda function - Invoke
  */
-test.todo('Wrapped lambda function - proxies lambda callback wrapping with Post-Execution middlewares');
-test.todo('Wrapped lambda function - proxies returned promise wrapping with Post-Execution middlewares');
-test.todo('Wrapped lambda function - should rethrow exceptions from thrown by the handler if there are no error handlers');
-test.todo('Wrapped lambda function - should rethrow exceptions from thrown by the handler if the error handler fails');
-test.todo('Wrapped lambda function - should handle exceptions from thrown by the handler with error handling middleware');
+test('Wrapped lambda function - proxies lambda callback wrapping with Post-Execution middlewares', async t => {
+  const stubHandler = t.context.stub((_event, _context, callback) => callback('result'));
+  const stubCallback = t.context.stub();
+  const stubMiddleware = t.context.stub();
+
+  const lambdaFunc = lambda({
+    handler: stubHandler,
+    middlewares: [{ after: stubMiddleware }]
+  });
+
+  await lambdaFunc('event', 'context', stubCallback);
+
+  t.snapshot(stubCallback.calls);
+  t.snapshot(stubMiddleware.calls);
+});
+
+test('Wrapped lambda function - proxies returned promise wrapping with Post-Execution middlewares', async t => {
+  const stubHandler = t.context.stub(async () => 'result');
+  const stubCallback = t.context.stub();
+  const stubMiddleware = t.context.stub();
+
+  const lambdaFunc = lambda({
+    handler: stubHandler,
+    middlewares: [{ after: stubMiddleware }]
+  });
+
+  const response = await lambdaFunc('event', 'context', stubCallback);
+
+  t.is(response, 'result');
+  t.snapshot(stubMiddleware.calls);
+});
+
+test('Wrapped lambda function - should rethrow exceptions thrown by the handler if there are no error handlers', async t => {
+  const stubHandler = t.context.stub(() => {
+    throw new Error();
+  });
+  const stubCallback = t.context.stub();
+
+  const lambdaFunc = lambda(stubHandler);
+
+  await t.throwsAsync(lambdaFunc('event', 'context', stubCallback), {
+    instanceOf: Error,
+    message: ''
+  });
+});
+
+test('Wrapped lambda function - should rethrow exceptions thrown by the handler if the error handler fails', async t => {
+  const stubHandler = t.context.stub(() => {
+    throw new Error();
+  });
+  const stubCallback = t.context.stub();
+  const stubMiddlewares = [{ onError: error => error }];
+
+  const lambdaFunc = lambda({ handler: stubHandler, middlewares: stubMiddlewares });
+
+  await t.throwsAsync(lambdaFunc('event', 'context', stubCallback), {
+    instanceOf: Error,
+    message: ''
+  });
+});
+
+test('Wrapped lambda function - should handle exceptions thrown by the handler with error handling middleware', async t => {
+  const stubHandler = t.context.stub(() => {
+    throw new Error();
+  });
+  const stubCallback = t.context.stub();
+  const stubMiddlewares = [{ onError: () => 'some new result' }];
+
+  const lambdaFunc = lambda({ handler: stubHandler, middlewares: stubMiddlewares });
+  const result = await lambdaFunc('event', 'context', stubCallback);
+
+  t.is(result, 'some new result');
+});
 
 /**
  * The Wrapped lambda function - Use
  */
-test.todo('Wrapped lambda function - should add the new middleware before component to the beforeMiddlewares');
-test.todo('Wrapped lambda function - should add the new middleware after component to the afterMiddlewares');
-test.todo('Wrapped lambda function - should add the new middleware error component to the errorMiddlewares');
-test.todo('Wrapped lambda function - should add all the new middleware components to the correct parts of the lifecycle');
+
+test.skip('Wrapped lambda function - should add the new middleware before component to the beforeMiddlewares', t =>
+  t.pass());
+
+test.skip('Wrapped lambda function - should add the new middleware after component to the afterMiddlewares', t =>
+  t.pass());
+
+test.skip('Wrapped lambda function - should add the new middleware error component to the errorMiddlewares', t =>
+  t.pass());
+
+test.skip('Wrapped lambda function - should add all the new middleware components to the correct parts of the lifecycle', t =>
+  t.pass());
