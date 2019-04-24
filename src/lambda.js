@@ -22,9 +22,9 @@ const traverseAndNormalize = middlewares => (
         : errorMiddlewares
     }),
     {
-      beforeMiddlewares: initBeforeMiddlewares,
-      afterMiddlewares: initAfterMiddlewares,
-      onErrorMiddlewares: initOnErrorMiddlewares
+      preExMiddlewares: initBeforeMiddlewares,
+      postExMiddlewares: initAfterMiddlewares,
+      errorMiddlewares: initOnErrorMiddlewares
     }
   );
 
@@ -99,13 +99,15 @@ const createLambdaFunc = ({
      * middleware exitted by calling the callback or returned a value. The middleware
      * will use the flag to behave in the same way.
      */
-    const { callbackFlag = false, ...result } = await new Promise(resolve =>
+    const handlerResponse = await new Promise(resolve =>
       resolve(
         cachedHandler(modifiedEvent, modifiedContext, res =>
           resolve({ callbackFlag: true, ...res })
         )
       )
     );
+
+    const { callbackFlag, ...result } = handlerResponse || { callbackFlag: false };
 
     const [modifiedResult] = await reduceMiddlewares({
       middlewares: postExMiddlewares,
