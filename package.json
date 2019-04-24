@@ -15,7 +15,7 @@
     "lint": "yarn lint:test",
     "lint:test": "eslint src/**",
     "lint:fix": "eslint --fix src/**",
-    "lint:report": "exitzero yarn run lint:test --format=tap --output-file ./reports/eslint/tap.xml && tap-junit --input ./reports/eslint/tap.xml --output ./reports/eslint/ --name test-results.xml"
+    "lint:report": "yarn run lint:test --format junit --output-file ./reports/eslint/test-results.xml"
   },
   "devDependencies": {
     "ava": "^1.4.1",
