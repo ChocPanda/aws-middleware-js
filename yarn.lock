@@ -1534,6 +1534,11 @@ execa@^1.0.0:
     signal-exit "^3.0.0"
     strip-eof "^1.0.0"
 
+exitzero@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/exitzero/-/exitzero-1.0.1.tgz#0da67af3c8ab131768daaf361f33b1a2d231a21b"
+  integrity sha1-DaZ688irExdo2q82HzOxotIxohs=
+
 expand-brackets@^2.1.4:
   version "2.1.4"
   resolved "https://registry.yarnpkg.com/expand-brackets/-/expand-brackets-2.1.4.tgz#b77735e315ce30f6b6eff0f83b04151a22449622"
