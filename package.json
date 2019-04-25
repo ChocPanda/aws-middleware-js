@@ -8,30 +8,23 @@
   "private": false,
   "scripts": {
     "build": "rollup",
-    "test": "yarn run test:unit",
+    "test": "nyc ava",
     "test:unit": "nyc ava",
     "test:cov": "nyc report",
-    "test:report": "yarn run test:unit --tap | tap-junit --output ./reports/ava --name test-results.xml",
-    "lint": "yarn lint:test",
-    "lint:test": "xo --cwd=./src",
-    "lint:fix": "yarn lint:test --fix",
-    "lint:report": "yarn run lint:test --reporter junit > ./reports/xo/test-results.xml"
+    "test:report": "nyc ava --tap | tap-junit --output ./reports/ava --name test-results.xml",
+    "lint": "xo",
+    "lint:test": "xo",
+    "lint:fix": "xo --fix",
+    "lint:report": "xo --reporter junit > ./reports/xo/test-results.xml"
   },
   "devDependencies": {
     "ava": "^1.4.1",
     "ninos": "^2.0.2",
     "nyc": "^14.0.0",
-    "prettier": "^1.17.0",
     "tap-junit": "^3.1.0",
     "xo": "^0.24.0"
   },
   "xo": {
-    "prettier": "true",
-    "rules": {
-      "prettier/prettier": [
-        "error"
-      ],
-      "no-use-before-define": "error"
-    }
+    "prettier": "true"
   }
 }
