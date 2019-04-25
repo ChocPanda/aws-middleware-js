@@ -14,7 +14,7 @@ jobs:
         steps:
         - checkout
         - run:
-            name: update-npm
+            name: Update NPM
             command: 'sudo npm install -g npm@latest'
         - restore_cache:
             name: Restore Yarn Package Cache
@@ -29,7 +29,7 @@ jobs:
             paths:
                 - ~/.cache/yarn
         - run:
-            name: create-reports-dir
+            name: Create Reports Directory
             command: mkdir -p ./reports/xo; mkdir -p ./reports/ava
         - persist_to_workspace:
             root: .
@@ -42,10 +42,10 @@ jobs:
             - attach_workspace:
                 at: .
             - run: # run unit tests
-                name: unit-test
+                name: Unit Test
                 command: 'yarn run test:report'
             - run: # run coverage report
-                name: code-coverage
+                name: Code Coverage
                 command: 'yarn run test:cov'
             - store_artifacts:
                 path: ./reports
@@ -60,7 +60,7 @@ jobs:
             - attach_workspace:
                 at: .
             - run: # run linting tests
-                name: lint-test
+                name: Lint Test
                 command: 'yarn lint:report'
             - store_artifacts:
                 path: ./reports
