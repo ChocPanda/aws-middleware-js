@@ -13,7 +13,7 @@
     "test:cov": "nyc report",
     "test:report": "yarn run test:unit --tap | tap-junit --output ./reports/ava --name test-results.xml",
     "lint": "yarn lint:test",
-    "lint:test": "xo --cwd=./src",
+    "lint:test": "xo",
     "lint:fix": "yarn lint:test --fix",
     "lint:report": "yarn run lint:test --reporter junit > ./reports/xo/test-results.xml"
   },
