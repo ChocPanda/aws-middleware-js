@@ -1,9 +1,12 @@
 {
-  "name": "faas-middleware-js",
+  "name": "aws-middleware-js",
   "version": "0.0.1",
-  "description": "An opinionated Middleware and lifecycle framework for build FaaS Lambdas",
+  "description": "An opinionated Middleware and lifecycle framework for build AWS Lambdas",
   "main": "src/index.js",
   "author": "ChocPanda",
+  "repository": "github:ChocPanda/aws-middleware-js",
+  "bugs": "https://github.com/ChocPanda/aws-middleware-js/issues",
+  "keywords": ["aws", "lambda", "middleware", "faas"],
   "license": "MIT",
   "private": false,
   "scripts": {
