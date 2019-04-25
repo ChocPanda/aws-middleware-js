@@ -10,7 +10,10 @@ const traverseAndNormalize = middlewares => (
 	initOnErrorMiddlewares = []
 ) =>
 	middlewares.reduce(
-		({preExMiddlewares, postExMiddlewares, errorMiddlewares}, {before, after, onError}) => ({
+		(
+			{ preExMiddlewares, postExMiddlewares, errorMiddlewares },
+			{ before, after, onError }
+		) => ({
 			preExMiddlewares: before
 				? [...preExMiddlewares, normalizePreExecutionMiddleware(before)]
 				: preExMiddlewares,
@@ -28,7 +31,10 @@ const traverseAndNormalize = middlewares => (
 		}
 	);
 
-const createErrorHandler = errorMiddlewares => (event, context) => async error => {
+const createErrorHandler = errorMiddlewares => (
+	event,
+	context
+) => async error => {
 	const errorResult = await reduceMiddlewares({
 		middlewares: errorMiddlewares,
 		errorHandler: err => {
@@ -43,19 +49,27 @@ const createErrorHandler = errorMiddlewares => (event, context) => async error =
 	return errorResult;
 };
 
-const createLambdaFunc = ({init, handler, middlewares, before = [], after = [], onError = []}) => {
-	const {preExMiddlewares, postExMiddlewares, errorMiddlewares} = traverseAndNormalize(middlewares)(
-		before,
-		after,
-		onError
-	);
+const createLambdaFunc = ({
+	init,
+	handler,
+	middlewares,
+	before = [],
+	after = [],
+	onError = []
+}) => {
+	const {
+		preExMiddlewares,
+		postExMiddlewares,
+		errorMiddlewares
+	} = traverseAndNormalize(middlewares)(before, after, onError);
 
 	const errorHandler = createErrorHandler(errorMiddlewares);
 
 	let cachedHandler;
 
 	const lambdaFunc = async (event, context, callback) => {
-		cachedHandler = cachedHandler || (cachedHandler = init ? handler(init()) : handler);
+		cachedHandler =
+			cachedHandler || (cachedHandler = init ? handler(init()) : handler);
 
 		const beforeResult = await reduceMiddlewares({
 			middlewares: preExMiddlewares,
@@ -94,15 +108,25 @@ const createLambdaFunc = ({init, handler, middlewares, before = [], after = [], 
 		 * middleware exitted by calling the callback or returned a value. The middleware
 		 * will use the flag to behave in the same way.
 		 */
-		const [{callbackFlag = false, errorFlag = false}, result] = await new Promise(resolve =>
+		const [
+			{ callbackFlag = false, errorFlag = false },
+			result
+		] = await new Promise(resolve =>
 			resolve(
-				cachedHandler(modifiedEvent, modifiedContext, res => resolve([{callbackFlag: true}, res]))
+				cachedHandler(modifiedEvent, modifiedContext, res =>
+					resolve([{ callbackFlag: true }, res])
+				)
 			)
 		)
-			.then(res => (Array.isArray(res) && res[0].callbackFlag ? res : [{}, res]))
+			.then(res =>
+				Array.isArray(res) && res[0].callbackFlag ? res : [{}, res]
+			)
 			.catch(async error => {
-				const [errorResult] = await errorHandler(modifiedEvent, modifiedContext)(error);
-				return [{errorFlag: true}, errorResult];
+				const [errorResult] = await errorHandler(
+					modifiedEvent,
+					modifiedContext
+				)(error);
+				return [{ errorFlag: true }, errorResult];
 			});
 
 		if (errorFlag) {
@@ -125,7 +149,9 @@ const createLambdaFunc = ({init, handler, middlewares, before = [], after = [], 
 		createLambdaFunc({
 			init,
 			handler,
-			middlewares: Array.isArray(newMiddlewares) ? newMiddlewares : [newMiddlewares],
+			middlewares: Array.isArray(newMiddlewares)
+				? newMiddlewares
+				: [newMiddlewares],
 			before: preExMiddlewares,
 			after: postExMiddlewares,
 			onError: errorMiddlewares
@@ -135,6 +161,6 @@ const createLambdaFunc = ({init, handler, middlewares, before = [], after = [], 
 };
 
 module.exports = srvFunc => {
-	const {init, handler = srvFunc, middlewares = []} = srvFunc;
-	return createLambdaFunc({init, handler, middlewares});
+	const { init, handler = srvFunc, middlewares = [] } = srvFunc;
+	return createLambdaFunc({ init, handler, middlewares });
 };
