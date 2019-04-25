@@ -4,6 +4,7 @@ node_modules
 # Generated files
 coverage
 reports
+dist
 .nyc_output
 
 # log files
