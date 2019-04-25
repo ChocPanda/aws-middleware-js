@@ -10,13 +10,15 @@ test('Wrapped lambda function - should run the init function', async t => {
 	const stubInitialiser = t.context.stub(() => stubHandler);
 	const stubCallback = t.context.stub();
 
-	const lambdaFunc = lambda({init: stubInit, handler: stubInitialiser});
+	const lambdaFunc = lambda({ init: stubInit, handler: stubInitialiser });
 
 	await lambdaFunc('event', 'context', stubCallback);
 
-	t.deepEqual(stubInit.calls, [{this: undefined, arguments: [], return: 'shared resource'}]);
+	t.deepEqual(stubInit.calls, [
+		{ this: undefined, arguments: [], return: 'shared resource' }
+	]);
 	t.deepEqual(stubInitialiser.calls, [
-		{this: undefined, arguments: ['shared resource'], return: stubHandler}
+		{ this: undefined, arguments: ['shared resource'], return: stubHandler }
 	]);
 
 	t.snapshot(stubHandler.calls);
@@ -28,14 +30,16 @@ test('Wrapped lambda function - should cache the result of the init function', a
 	const stubInitialiser = t.context.stub(() => stubHandler);
 	const stubCallback = t.context.stub();
 
-	const lambdaFunc = lambda({init: stubInit, handler: stubInitialiser});
+	const lambdaFunc = lambda({ init: stubInit, handler: stubInitialiser });
 
 	await lambdaFunc('event', 'context', stubCallback);
 	await lambdaFunc('event', 'context', stubCallback);
 
-	t.deepEqual(stubInit.calls, [{this: undefined, arguments: [], return: 'shared resource'}]);
+	t.deepEqual(stubInit.calls, [
+		{ this: undefined, arguments: [], return: 'shared resource' }
+	]);
 	t.deepEqual(stubInitialiser.calls, [
-		{this: undefined, arguments: ['shared resource'], return: stubHandler}
+		{ this: undefined, arguments: ['shared resource'], return: stubHandler }
 	]);
 
 	t.snapshot(stubHandler.calls);
@@ -45,7 +49,7 @@ test('Wrapped lambda function - does not require an init function', async t => {
 	const stubHandler = t.context.stub();
 	const stubCallback = t.context.stub();
 
-	const lambdaFunc = lambda({handler: stubHandler});
+	const lambdaFunc = lambda({ handler: stubHandler });
 
 	await lambdaFunc('event', 'context', stubCallback);
 
@@ -70,15 +74,18 @@ test('Wrapped lambda function - accepts a function parameter', async t => {
 	test(`Wrapped lambda function - should execute ${numMiddlewares} pre-execution middlewares and the handler`, async t => {
 		const stubHandler = t.context.stub();
 		const stubCallback = t.context.stub();
-		const stubMiddlewares = Array.from({length: numMiddlewares}, () => ({
+		const stubMiddlewares = Array.from({ length: numMiddlewares }, () => ({
 			before: t.context.stub()
 		}));
 
-		const lambdaFunc = lambda({handler: stubHandler, middlewares: stubMiddlewares});
+		const lambdaFunc = lambda({
+			handler: stubHandler,
+			middlewares: stubMiddlewares
+		});
 
 		await lambdaFunc('event', 'context', stubCallback);
 
-		stubMiddlewares.forEach(({before}) => t.snapshot(before.calls));
+		stubMiddlewares.forEach(({ before }) => t.snapshot(before.calls));
 		t.snapshot(stubHandler.calls);
 	})
 );
@@ -94,7 +101,10 @@ test('Wrapped lambda function - should rethrow exceptions from pre-execution mid
 		}
 	];
 
-	const lambdaFunc = lambda({handler: stubHandler, middlewares: stubMiddlewares});
+	const lambdaFunc = lambda({
+		handler: stubHandler,
+		middlewares: stubMiddlewares
+	});
 
 	await t.throwsAsync(lambdaFunc('event', 'context', stubCallback), {
 		instanceOf: Error,
@@ -116,7 +126,10 @@ test('Wrapped lambda function - should rethrow exceptions from pre-execution mid
 		}
 	];
 
-	const lambdaFunc = lambda({handler: stubHandler, middlewares: stubMiddlewares});
+	const lambdaFunc = lambda({
+		handler: stubHandler,
+		middlewares: stubMiddlewares
+	});
 
 	await t.throwsAsync(lambdaFunc('event', 'context', stubCallback), {
 		instanceOf: Error,
@@ -138,7 +151,10 @@ test('Wrapped lambda function - should handle exceptions from pre-execution midd
 		}
 	];
 
-	const lambdaFunc = lambda({handler: stubHandler, middlewares: stubMiddlewares});
+	const lambdaFunc = lambda({
+		handler: stubHandler,
+		middlewares: stubMiddlewares
+	});
 	const result = await lambdaFunc('event', 'context', stubCallback);
 
 	t.is(result, 'some new result');
@@ -149,15 +165,18 @@ test('Wrapped lambda function - should handle exceptions from pre-execution midd
 	test(`Wrapped lambda function - should execute ${numMiddlewares} post-execution middlewares and the handler`, async t => {
 		const stubHandler = t.context.stub(() => 'result');
 		const stubCallback = t.context.stub();
-		const stubMiddlewares = Array.from({length: numMiddlewares}, () => ({
+		const stubMiddlewares = Array.from({ length: numMiddlewares }, () => ({
 			after: t.context.stub()
 		}));
 
-		const lambdaFunc = lambda({handler: stubHandler, middlewares: stubMiddlewares});
+		const lambdaFunc = lambda({
+			handler: stubHandler,
+			middlewares: stubMiddlewares
+		});
 
 		await lambdaFunc('event', 'context', stubCallback);
 
-		stubMiddlewares.forEach(({after}) => t.snapshot(after.calls));
+		stubMiddlewares.forEach(({ after }) => t.snapshot(after.calls));
 		t.snapshot(stubHandler.calls);
 	})
 );
@@ -173,7 +192,10 @@ test('Wrapped lambda function - should rethrow exceptions from post-execution mi
 		}
 	];
 
-	const lambdaFunc = lambda({handler: stubHandler, middlewares: stubMiddlewares});
+	const lambdaFunc = lambda({
+		handler: stubHandler,
+		middlewares: stubMiddlewares
+	});
 
 	await t.throwsAsync(lambdaFunc('event', 'context', stubCallback), {
 		instanceOf: Error,
@@ -195,7 +217,10 @@ test('Wrapped lambda function - should rethrow exceptions from post-execution mi
 		}
 	];
 
-	const lambdaFunc = lambda({handler: stubHandler, middlewares: stubMiddlewares});
+	const lambdaFunc = lambda({
+		handler: stubHandler,
+		middlewares: stubMiddlewares
+	});
 
 	await t.throwsAsync(lambdaFunc('event', 'context', stubCallback), {
 		instanceOf: Error,
@@ -217,7 +242,10 @@ test('Wrapped lambda function - should handle exceptions from post-execution mid
 		}
 	];
 
-	const lambdaFunc = lambda({handler: stubHandler, middlewares: stubMiddlewares});
+	const lambdaFunc = lambda({
+		handler: stubHandler,
+		middlewares: stubMiddlewares
+	});
 	const result = await lambdaFunc('event', 'context', stubCallback);
 
 	t.is(result, 'some new result');
@@ -228,13 +256,15 @@ test('Wrapped lambda function - should handle exceptions from post-execution mid
  * The Wrapped lambda function - Invoke
  */
 test('Wrapped lambda function - proxies lambda callback wrapping with Post-Execution middlewares', async t => {
-	const stubHandler = t.context.stub((_event, _context, callback) => callback('result'));
+	const stubHandler = t.context.stub((_event, _context, callback) =>
+		callback('result')
+	);
 	const stubCallback = t.context.stub();
 	const stubMiddleware = t.context.stub();
 
 	const lambdaFunc = lambda({
 		handler: stubHandler,
-		middlewares: [{after: stubMiddleware}]
+		middlewares: [{ after: stubMiddleware }]
 	});
 
 	await lambdaFunc('event', 'context', stubCallback);
@@ -250,7 +280,7 @@ test('Wrapped lambda function - proxies returned promise wrapping with Post-Exec
 
 	const lambdaFunc = lambda({
 		handler: stubHandler,
-		middlewares: [{after: stubMiddleware}]
+		middlewares: [{ after: stubMiddleware }]
 	});
 
 	const response = await lambdaFunc('event', 'context', stubCallback);
@@ -278,9 +308,12 @@ test('Wrapped lambda function - should rethrow exceptions thrown by the handler 
 		throw new Error('bang');
 	});
 	const stubCallback = t.context.stub();
-	const stubMiddlewares = [{onError: error => error}];
+	const stubMiddlewares = [{ onError: error => error }];
 
-	const lambdaFunc = lambda({handler: stubHandler, middlewares: stubMiddlewares});
+	const lambdaFunc = lambda({
+		handler: stubHandler,
+		middlewares: stubMiddlewares
+	});
 
 	await t.throwsAsync(lambdaFunc('event', 'context', stubCallback), {
 		instanceOf: Error,
@@ -293,9 +326,12 @@ test('Wrapped lambda function - should handle exceptions thrown by the handler w
 		throw new Error('bang');
 	});
 	const stubCallback = t.context.stub();
-	const stubMiddlewares = [{onError: () => 'some new result'}];
+	const stubMiddlewares = [{ onError: () => 'some new result' }];
 
-	const lambdaFunc = lambda({handler: stubHandler, middlewares: stubMiddlewares});
+	const lambdaFunc = lambda({
+		handler: stubHandler,
+		middlewares: stubMiddlewares
+	});
 	const result = await lambdaFunc('event', 'context', stubCallback);
 
 	t.is(result, 'some new result');
@@ -305,14 +341,129 @@ test('Wrapped lambda function - should handle exceptions thrown by the handler w
  * The Wrapped lambda function - Use
  */
 
-test.skip('Wrapped lambda function - should add the new middleware before component to the beforeMiddlewares', t =>
-	t.pass());
+[0, 1, 3].forEach(numMiddlewares =>
+	test(`Wrapped lambda function - should add the new middlewares before component to the the existing ${numMiddlewares} beforeMiddlewares`, async t => {
+		const newMiddleware = t.context.stub();
+		const stubHandler = t.context.stub(async () => 'result');
+		const stubCallback = t.context.stub();
 
-test.skip('Wrapped lambda function - should add the new middleware after component to the afterMiddlewares', t =>
-	t.pass());
+		const stubMiddlewares = Array.from({ length: numMiddlewares }, () => ({
+			before: () => {}
+		}));
 
-test.skip('Wrapped lambda function - should add the new middleware error component to the errorMiddlewares', t =>
-	t.pass());
+		const lambdaFunc = lambda({
+			handler: stubHandler,
+			middlewares: stubMiddlewares
+		});
 
-test.skip('Wrapped lambda function - should add all the new middleware components to the correct parts of the lifecycle', t =>
-	t.pass());
+		const updatedLambda = lambdaFunc.use({ before: newMiddleware });
+		await updatedLambda('event', 'context', stubCallback);
+
+		t.snapshot(newMiddleware.calls);
+	})
+);
+
+[0, 1, 3].forEach(numMiddlewares =>
+	test(`Wrapped lambda function - should add the new middlewares after component to the the existing ${numMiddlewares} afterMiddlewares`, async t => {
+		const newMiddleware = t.context.stub();
+		const stubHandler = t.context.stub(async () => 'result');
+		const stubCallback = t.context.stub();
+
+		const stubMiddlewares = Array.from({ length: numMiddlewares }, () => ({
+			after: () => {}
+		}));
+
+		const lambdaFunc = lambda({
+			handler: stubHandler,
+			middlewares: stubMiddlewares
+		});
+
+		const updatedLambda = lambdaFunc.use({ after: newMiddleware });
+		await updatedLambda('event', 'context', stubCallback);
+
+		t.snapshot(newMiddleware.calls);
+	})
+);
+
+[0, 1, 3].forEach(numMiddlewares =>
+	test(`Wrapped lambda function - should add the new middlewares onError component to the the existing ${numMiddlewares} errorMiddlewares`, async t => {
+		const newMiddleware = t.context.stub(() => 'some new result');
+		const stubHandler = t.context.stub(async () => {
+			throw new Error('Bang');
+		});
+		const stubCallback = t.context.stub();
+
+		const stubMiddlewares = Array.from({ length: numMiddlewares }, () => ({
+			onError: () => {}
+		}));
+
+		const lambdaFunc = lambda({
+			handler: stubHandler,
+			middlewares: stubMiddlewares
+		});
+
+		const updatedLambda = lambdaFunc.use({ onError: newMiddleware });
+		const result = await updatedLambda('event', 'context', stubCallback);
+
+		t.is(result, 'some new result');
+		t.snapshot(newMiddleware.calls);
+	})
+);
+
+const useMiddlewareTestMacro = async (
+	t,
+	numMiddlewares,
+	handler,
+	expectedResult
+) => {
+	const newBeforeMiddleware = t.context.stub();
+	const newAfterMiddleware = t.context.stub(() => "an error didn't occur");
+	const newErrorMiddleware = t.context.stub(() => 'an error occured');
+
+	const stubHandler = t.context.stub(handler);
+	const stubCallback = t.context.stub();
+
+	const stubMiddlewares = Array.from({ length: numMiddlewares }, () => ({
+		before: () => {},
+		after: () => {},
+		onError: () => {}
+	}));
+
+	const lambdaFunc = lambda({
+		handler: stubHandler,
+		middlewares: stubMiddlewares
+	});
+
+	const updatedLambda = lambdaFunc.use({
+		before: newBeforeMiddleware,
+		after: newAfterMiddleware,
+		onError: newErrorMiddleware
+	});
+
+	const result = await updatedLambda('event', 'context', stubCallback);
+
+	t.is(result, expectedResult);
+	t.snapshot(newBeforeMiddleware.calls);
+	t.snapshot(newAfterMiddleware.calls);
+	t.snapshot(newErrorMiddleware.calls);
+};
+
+[0, 1, 3].forEach(numMiddlewares => {
+	test(
+		`Wrapped lambda function - should add all the new middlewares components to the the existing ${numMiddlewares} middlewares`,
+		useMiddlewareTestMacro,
+		numMiddlewares,
+		() => {},
+		"an error didn't occur"
+	);
+
+	test(
+		`Wrapped lambda function - should add all the new middlewares components to the the existing ${numMiddlewares} middlewares - ERROR CASE`,
+		useMiddlewareTestMacro,
+		numMiddlewares,
+		() => {
+			throw new Error('bang');
+		},
+		'an error occured'
+	);
+});

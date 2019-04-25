@@ -9,7 +9,12 @@ const {
  * Normalize Pre-Execution Middlewares
  */
 
-const preExecutionTestMacro = async (t, middleware, expectedEvent, expectedContext) => {
+const preExecutionTestMacro = async (
+	t,
+	middleware,
+	expectedEvent,
+	expectedContext
+) => {
 	const normalizedMiddleware = normalizePreExecutionMiddleware(middleware);
 	const middlewareResult = await normalizedMiddleware('event', 'context');
 
@@ -44,8 +49,13 @@ preExecutionTestMacro.title = inputDesc =>
 		expectedEvent: 'event',
 		expectedContext: 'context'
 	},
-	{desc: 'void', middleware: () => {}, expectedEvent: 'event', expectedContext: 'context'}
-].forEach(({desc, middleware, expectedEvent, expectedContext}) =>
+	{
+		desc: 'void',
+		middleware: () => {},
+		expectedEvent: 'event',
+		expectedContext: 'context'
+	}
+].forEach(({ desc, middleware, expectedEvent, expectedContext }) =>
 	test(desc, preExecutionTestMacro, middleware, expectedEvent, expectedContext)
 );
 
@@ -55,7 +65,11 @@ preExecutionTestMacro.title = inputDesc =>
 
 const postExecutionTestMacro = async (t, middleware, expectedArgs) => {
 	const normalizedMiddleware = normalizePostExecutionMiddleware(middleware);
-	const middlewareResult = await normalizedMiddleware('result', 'event', 'context');
+	const middlewareResult = await normalizedMiddleware(
+		'result',
+		'event',
+		'context'
+	);
 
 	t.deepEqual(middlewareResult, expectedArgs);
 };
@@ -99,8 +113,13 @@ postExecutionTestMacro.title = inputDesc =>
 		expectedEvent: 'event',
 		expectedContext: 'context'
 	}
-].forEach(({desc, middleware, expectedResult, expectedEvent, expectedContext}) =>
-	test(desc, postExecutionTestMacro, middleware, [expectedResult, expectedEvent, expectedContext])
+].forEach(
+	({ desc, middleware, expectedResult, expectedEvent, expectedContext }) =>
+		test(desc, postExecutionTestMacro, middleware, [
+			expectedResult,
+			expectedEvent,
+			expectedContext
+		])
 );
 
 /**
@@ -108,27 +127,34 @@ postExecutionTestMacro.title = inputDesc =>
  */
 
 const createTestMiddlewares = fn => [
-	{numMiddlewares: 1, createMiddlewares: t => [t.context.stub(fn)]},
+	{ numMiddlewares: 1, createMiddlewares: t => [t.context.stub(fn)] },
 	{
 		numMiddlewares: 2,
-		createMiddlewares: t => Array.from({length: 2}, () => t.context.stub(fn))
+		createMiddlewares: t => Array.from({ length: 2 }, () => t.context.stub(fn))
 	},
 	{
 		numMiddlewares: 5,
-		createMiddlewares: t => Array.from({length: 5}, () => t.context.stub(fn))
+		createMiddlewares: t => Array.from({ length: 5 }, () => t.context.stub(fn))
 	}
 ];
 
 const identityFn = (...args) => args;
 const testIdentityMiddlewares = createTestMiddlewares(identityFn);
 
-const executeAllMiddlewaresTestMacro = async (t, createStubMiddlewares, normalizer, args) => {
+const executeAllMiddlewaresTestMacro = async (
+	t,
+	createStubMiddlewares,
+	normalizer,
+	args
+) => {
 	const stubMiddlewares = createStubMiddlewares(t);
 	const middlewares = stubMiddlewares.map(normalizer);
-	await reduceMiddlewares({middlewares})(...args);
+	await reduceMiddlewares({ middlewares })(...args);
 
-	const middlewareCalls = stubMiddlewares.map(stubMiddleware => stubMiddleware.calls);
-	const expectedCalls = Array.from({length: stubMiddlewares.length}, () => [
+	const middlewareCalls = stubMiddlewares.map(
+		stubMiddleware => stubMiddleware.calls
+	);
+	const expectedCalls = Array.from({ length: stubMiddlewares.length }, () => [
 		{
 			arguments: args,
 			return: args,
@@ -144,7 +170,7 @@ testIdentityMiddlewares
 		normalizer: normalizePreExecutionMiddleware,
 		...testParams
 	}))
-	.forEach(({numMiddlewares, createMiddlewares, normalizer}) =>
+	.forEach(({ numMiddlewares, createMiddlewares, normalizer }) =>
 		test(
 			`Reduce middlewares - should execute all Pre-Execution Middlewares when there are ${numMiddlewares} middlewares`,
 			executeAllMiddlewaresTestMacro,
@@ -159,7 +185,7 @@ testIdentityMiddlewares
 		normalizer: normalizePostExecutionMiddleware,
 		...testParams
 	}))
-	.forEach(({numMiddlewares, createMiddlewares, normalizer}) =>
+	.forEach(({ numMiddlewares, createMiddlewares, normalizer }) =>
 		test(
 			`Reduce middlewares - should execute all Post-Execution Middlewares when there are ${numMiddlewares} middlewares`,
 			executeAllMiddlewaresTestMacro,
@@ -177,13 +203,15 @@ const executionOrderTestMacro = async (t, normalizer, args) => {
 		t.context.stub(() => 3)
 	];
 	const middlewares = stubMiddlewares.map(normalizer);
-	await reduceMiddlewares({middlewares})(...args);
+	await reduceMiddlewares({ middlewares })(...args);
 
-	const middlewareCalls = stubMiddlewares.map(stubMiddleware => stubMiddleware.calls);
+	const middlewareCalls = stubMiddlewares.map(
+		stubMiddleware => stubMiddleware.calls
+	);
 	const expectedCalls = [
-		[{arguments: args, return: 1, this: undefined}],
-		[{arguments: [1, ...args.slice(1)], return: 2, this: undefined}],
-		[{arguments: [2, ...args.slice(1)], return: 3, this: undefined}]
+		[{ arguments: args, return: 1, this: undefined }],
+		[{ arguments: [1, ...args.slice(1)], return: 2, this: undefined }],
+		[{ arguments: [2, ...args.slice(1)], return: 3, this: undefined }]
 	];
 
 	t.deepEqual(middlewareCalls, expectedCalls);
