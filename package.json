@@ -13,24 +13,25 @@
     "test:cov": "nyc report",
     "test:report": "yarn run test:unit --tap | tap-junit --output ./reports/ava --name test-results.xml",
     "lint": "yarn lint:test",
-    "lint:test": "eslint src/**",
-    "lint:fix": "eslint --fix src/**",
-    "lint:report": "yarn run lint:test --format junit --output-file ./reports/eslint/test-results.xml"
+    "lint:test": "xo --cwd=./src",
+    "lint:fix": "yarn lint:test --fix",
+    "lint:report": "yarn run lint:test --reporter junit > ./reports/xo/test-results.xml"
   },
   "devDependencies": {
     "ava": "^1.4.1",
-    "eslint": "^5.16.0",
-    "eslint-config-airbnb-base": "^13.1.0",
-    "eslint-config-prettier": "^4.1.0",
-    "eslint-plugin-ava": "^6.0.0",
-    "eslint-plugin-flowtype": "^3.6.1",
-    "eslint-plugin-import": "^2.14.0",
-    "eslint-plugin-prettier": "^3.0.1",
-    "exitzero": "^1.0.1",
     "ninos": "^2.0.2",
     "nyc": "^14.0.0",
     "prettier": "^1.17.0",
-    "tap-junit": "^3.1.0"
+    "tap-junit": "^3.1.0",
+    "xo": "^0.24.0"
   },
-  "dependencies": {}
+  "xo": {
+    "prettier": "true",
+    "rules": {
+      "prettier/prettier": [
+        "error"
+      ],
+      "no-use-before-define": "error"
+    }
+  }
 }

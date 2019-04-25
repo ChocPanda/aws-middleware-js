@@ -30,7 +30,7 @@ jobs:
                 - ~/.cache/yarn
         - run:
             name: create-reports-dir
-            command: mkdir -p ./reports          
+            command: mkdir -p ./reports/xo; mkdir -p ./reports/ava
         - persist_to_workspace:
             root: .
             paths:
