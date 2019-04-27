@@ -59,7 +59,7 @@ jobs:
         steps:
             - attach_workspace:
                 at: .
-            - run: # run linting tests
+            - run:
                 name: Lint Test
                 command: 'yarn lint:report'
             - store_artifacts:
@@ -67,6 +67,16 @@ jobs:
             - store_test_results:
                 path: ./reports
 
+    build:
+        executor: builder
+        steps:
+            - attach_workspace:
+                at: .
+            - run:
+                name: Build
+                command: 'yarn build'
+            - store_artifacts:
+                path: ./dist
 workflows:
     main:
         jobs:
@@ -75,3 +85,5 @@ workflows:
                 requires: [ setup ]
             - test:
                 requires: [ setup ]
+            - build:
+                requires: [ lint, test ]
