@@ -5,14 +5,14 @@ import commonjs from 'rollup-plugin-commonjs';
 import license from 'rollup-plugin-license';
 
 const plugins = [
-			resolve(),
-			commonjs(),
-			license({
-				banner: {
-					file: path.join(__dirname, 'LICENSE')
-				}
-			})
-		];
+	resolve(),
+	commonjs(),
+	license({
+		banner: {
+			file: path.join(__dirname, 'LICENSE')
+		}
+	})
+];
 
 export default [
 	{
@@ -39,5 +39,4 @@ export default [
 		external: ['http-errors'],
 		plugins
 	}
-	// Todo index.js to tie it all together
 ];
