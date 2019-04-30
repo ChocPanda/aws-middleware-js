@@ -1,3 +1,6 @@
+const createError = require('http-errors');
+const { HttpError } = require('http-errors');
+
 const normalizePreExecutionMiddleware = middleware => async (
 	event,
 	context
@@ -35,6 +38,19 @@ const reduceMiddlewares = ({ errorHandler, middlewares }) => async (...args) =>
 		}
 	}, args);
 
+// This is a horrible hack that should be removed
+function ExtendedHttpError(...args) {
+	const error = createError(...args);
+	const self = this;
+
+	Object.entries(error).forEach(([key, value]) => {
+		self[key] = value;
+	});
+}
+
+ExtendedHttpError.prototype = Object.create(HttpError.prototype);
+
 module.exports.normalizePreExecutionMiddleware = normalizePreExecutionMiddleware;
 module.exports.normalizePostExecutionMiddleware = normalizePostExecutionMiddleware;
 module.exports.reduceMiddlewares = reduceMiddlewares;
+module.exports.createHttpError = (...args) => new ExtendedHttpError(...args);
