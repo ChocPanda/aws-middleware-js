@@ -6,7 +6,8 @@ export default [
 		input: 'src/lambda.js',
 		output: {
 			file: 'dist/bundle.js',
-			format: 'cjs'
+			format: 'cjs',
+			preferConst: true,
 		},
 		plugins: [resolve(), commonjs()]
 	}
