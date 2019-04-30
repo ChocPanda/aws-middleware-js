@@ -7,7 +7,7 @@ export default [
 		output: {
 			file: 'dist/bundle.js',
 			format: 'cjs',
-			preferConst: true,
+			preferConst: true
 		},
 		plugins: [resolve(), commonjs()]
 	}
