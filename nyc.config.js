@@ -12,7 +12,7 @@ module.exports = {
 		statements: [80, 95]
 	},
 	include: ['src/**/*.js'],
-	exclude: ['src/**/*.test.js'],
+	exclude: ['src/**/*.test.js', 'src/**/index.js'],
 	reporter: ['lcov', 'text-summary'],
 	cache: true,
 	all: true,
