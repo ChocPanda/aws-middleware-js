@@ -1,6 +1,7 @@
-# CURRENTLY STILL A WORK IN PROGRESS
 
 # AWS-MIDDLEWARE-JS
+
+## CURRENTLY STILL A WORK IN PROGRESS
 
 [![CircleCI](https://img.shields.io/circleci/project/github/ChocPanda/aws-middleware-js/master.svg?style=popout)](https://circleci.com/gh/ChocPanda/aws-middleware-js) [![codecov](https://codecov.io/gh/ChocPanda/aws-middleware-js/branch/master/graph/badge.svg)](https://codecov.io/gh/ChocPanda/aws-middleware-js) [![dependencies](https://david-dm.org/ChocPanda/aws-middleware-js.svg)](https://david-dm.org/ChocPanda/aws-middleware-js) [![license](https://img.shields.io/github/license/ChocPanda/aws-middleware-js.svg?style=popout)](https://github.com/ChocPanda/aws-middleware-js/blob/master/LICENSE) [![XO code style](https://img.shields.io/badge/code_style-XO-5ed9c7.svg)](https://github.com/xojs/xo)
 
@@ -40,8 +41,8 @@ AWS Middleware JS provides a lifecycle for use when building service functions, 
 
 ## References
 
- - [AWS Lambda functions](https://aws.amazon.com/lambda/)
- - [Best Practices guide](https://docs.aws.amazon.com/lambda/latest/dg/best-practices.html#function-code).
+- [AWS Lambda functions](https://aws.amazon.com/lambda/)
+- [Best Practices guide](https://docs.aws.amazon.com/lambda/latest/dg/best-practices.html#function-code).
 
 ## Contributions
   

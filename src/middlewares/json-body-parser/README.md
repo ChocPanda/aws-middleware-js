@@ -78,4 +78,4 @@ module.handler = lambdaFunc.use(
 ## Configuration
 
 - **assumeJson** (default: false): Will attempt to deserialize the request body as json if the `Content-Type` has not been specified.
-- **deserialize** (default: [JSON.parse](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/parse)): Specifies the json parse function to use when deserializing request body.
+- **deserialize** (default: [JSON.parse](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/parse)): The json parse function to use when deserializing request body.
