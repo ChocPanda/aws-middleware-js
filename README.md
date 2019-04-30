@@ -14,6 +14,9 @@ This project was inspired by [middy js](https://github.com/middyjs/middy), `a st
 
 AWS Middleware JS provides a lifecycle for use when building service functions, the motivation for this was to make the lambdas more testable by removing side effects from the lambda files.
 
+## Middlewares
+  - [JSON Body Parser](./src/middlewares/json-parser/README.md): JSON Request body parser
+
 ### References
  - [AWS Lambda functions](https://aws.amazon.com/lambda/)
  - [Best Practices guide](https://docs.aws.amazon.com/lambda/latest/dg/best-practices.html#function-code).
