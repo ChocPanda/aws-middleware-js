@@ -4,16 +4,7 @@ import resolve from 'rollup-plugin-node-resolve';
 import commonjs from 'rollup-plugin-commonjs';
 import license from 'rollup-plugin-license';
 
-export default [
-	{
-		input: 'src/lambda.js',
-		output: {
-			file: 'dist/bundle.js',
-			format: 'cjs',
-			preferConst: true
-		},
-		external: ['http-errors'],
-		plugins: [
+const plugins = [
 			resolve(),
 			commonjs(),
 			license({
@@ -21,6 +12,32 @@ export default [
 					file: path.join(__dirname, 'LICENSE')
 				}
 			})
-		]
+		];
+
+export default [
+	{
+		input: 'src/lambda.js',
+		output: {
+			file: 'dist/lambda.js',
+			format: 'cjs',
+			preferConst: true
+		},
+		external: ['http-errors'],
+		plugins
+	},
+	// Middlewares
+	{
+		input: {
+			'json-body-parser': 'src/middlewares/json-body-parser/index.js'
+		},
+		output: {
+			dir: 'dist/middlewares/',
+			entryFileNames: '[name]/index.js',
+			format: 'cjs',
+			preferConst: true
+		},
+		external: ['http-errors'],
+		plugins
 	}
+	// Todo index.js to tie it all together
 ];
