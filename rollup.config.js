@@ -12,6 +12,7 @@ export default [
 			format: 'cjs',
 			preferConst: true
 		},
+		external: ['http-errors'],
 		plugins: [
 			resolve(),
 			commonjs(),
