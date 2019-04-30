@@ -21,7 +21,7 @@ AWS Middleware JS provides a lifecycle for use when building service functions, 
 
 ## Middlewares
 
-- [JSON Body Parser](./src/middlewares/json-parser/README.md): JSON Request body parser
+- [JSON Body Parser](./src/middlewares/json-body-parser/README.md): JSON Request body parser
 
 ## Why
 
@@ -35,14 +35,14 @@ AWS Middleware JS provides a lifecycle for use when building service functions, 
 
   When writing lambdas there can be a fair bit of boiler plate code wrapping up the business logic and cluttering your code base, AWS middleware abstracts this out into common reusable middlewares that can be configured and shared accross all your lambdas
 
-### Library integration
-
-  This library is designed and written to be as small and lightweight as possible ([a nano library if you will](https://medium.com/@kelin2025/writing-js-libraries-less-than-1tb-size-6342da0c006a)). Therefore I won't include any dependencies in here specific to just a single middleware however if it's useful I will try to create and maintain seperate intergrations with other libraries.
-
 ## References
 
 - [AWS Lambda functions](https://aws.amazon.com/lambda/)
 - [Best Practices guide](https://docs.aws.amazon.com/lambda/latest/dg/best-practices.html#function-code).
+
+### Notes
+
+  This library is designed and written to be as small and lightweight as possible ([a nano library if you will](https://medium.com/@kelin2025/writing-js-libraries-less-than-1tb-size-6342da0c006a)). Therefore I won't include any dependencies in here specific to just a single middleware however if it's useful I will try to create and maintain seperate intergrations with other libraries.
 
 ## Contributions
   
