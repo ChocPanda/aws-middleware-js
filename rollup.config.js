@@ -18,9 +18,10 @@ export default [
 	{
 		input: 'src/lambda.js',
 		output: {
-			file: 'dist/lambda.js',
+			file: 'dist/index.js',
 			format: 'cjs',
-			preferConst: true
+			preferConst: true,
+			exports: 'default'
 		},
 		external: ['http-errors'],
 		plugins
@@ -28,13 +29,25 @@ export default [
 	// Middlewares
 	{
 		input: {
-			'json-body-parser': 'src/middlewares/json-body-parser/index.js'
+			'json-body-parser': 'src/middlewares/json-body-parser/middleware.js'
 		},
 		output: {
 			dir: 'dist/middlewares/',
 			entryFileNames: '[name]/index.js',
 			format: 'cjs',
-			preferConst: true
+			preferConst: true,
+			exports: 'named'
+		},
+		external: ['http-errors'],
+		plugins
+	},
+	{
+		input: 'src/middlewares/index.js',
+		output: {
+			file: 'dist/middlewares/index.js',
+			format: 'cjs',
+			preferConst: true,
+			exports: 'named'
 		},
 		external: ['http-errors'],
 		plugins
