@@ -13,7 +13,7 @@ This project was inspired by [middy js](https://github.com/middyjs/middy), `a st
 
 ## Usage
 
-  [`Coming soon...`](https://github.com/ChocPanda/aws-middleware-js/issues/11)
+  [Coming soon...](https://github.com/ChocPanda/aws-middleware-js/issues/11)
 
 ## AWS Middleware JS Lifecycle
 
@@ -21,7 +21,7 @@ AWS Middleware JS provides a lifecycle for use when building service functions, 
 
 ## Middlewares
 
-- [JSON Body Parser](./src/middlewares/json-body-parser/README.md): JSON Request body parser
+- [JSON Body Parser](./src/middlewares/json-body-parser/README.md)
 
 ## Why
 
@@ -46,4 +46,4 @@ AWS Middleware JS provides a lifecycle for use when building service functions, 
 
 ## Contributions
   
-  [`Coming soon...`](https://github.com/ChocPanda/aws-middleware-js/issues/12)
+  [Coming soon...](https://github.com/ChocPanda/aws-middleware-js/issues/12)
