@@ -1,4 +1,4 @@
-# Snapshot report for `src/middlewares/json-parser/__test__/middleware.test.js`
+# Snapshot report for `src/middlewares/json-body-parser/__test__/middleware.test.js`
 
 The actual snapshot is saved in `middleware.test.js.snap`.
 
