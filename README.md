@@ -11,6 +11,15 @@ An opinionated Middleware and lifecycle framework for building service functions
 
 This project was inspired by [middy js](https://github.com/middyjs/middy), `a stylish library with some excellent tooling for building service functions`. The project has taken a few of those ideas and attempts to apply a more [functional programming style](https://codeburst.io/functional-programming-in-javascript-e57e7e28c0e5) to their implementation.
 
+## Contents
+- [Usage](#usage)
+- [API](#api)
+- [Middleware](#middleware)
+- [Lifecycle](#lifecycle-additions)
+- [References](#references)
+- [Notes](#notes)
+- [Contributions](#contributions)
+
 ## Usage
 
   [Coming soon...](https://github.com/ChocPanda/aws-middleware-js/issues/11)
@@ -100,7 +109,7 @@ exports.handler = lambda(myAsyncHandler)
   .use(httpErrorHandler())
 ```
 
-#### Lifecycle additions:
+### Lifecycle additions:
 
 Currently this is just adding an initialisation step to the lambda function, aws-middleware-js lazily evaluates the resource and caches the result for [reuse of the execution enviroment](https://docs.aws.amazon.com/lambda/latest/dg/best-practices.html).
 
@@ -170,9 +179,9 @@ Always while wrapping up your code in the middlewares you've chosen with no extr
 This library is designed and written to be as small and lightweight as possible ([a nano library if you will](https://medium.com/@kelin2025/writing-js-libraries-less-than-1tb-size-6342da0c006a)). Therefore I won't include any dependencies in here specific to just a single middleware however if it's useful I will try to create and maintain seperate intergrations with other libraries.
 
 ## Contributions
-  
-  [Coming soon...](https://github.com/ChocPanda/aws-middleware-js/issues/12)
+
+See our [contributing doc](./CONTRIBUTING.md), be sure to checkout the [code of conduct](./CONTRIBUTING.md#code-of-conduct)
 
 ### Conventional Commits
 
-This project used [conventianal commits](https://www.conventionalcommits.org/en/v1.0.0-beta.3/#specification) to manage versions and releases of the library therefore when making a commit please use either `yarn commit <COMMIT_PARAMETERS>` or please feel free to use our git hooks which can be configured using `git config core.hooksPath hooks` and this will guide you through writing a conventional commit message which can be understood by the ci pipeline
+This project used [conventianal commits](https://www.conventionalcommits.org/en/v1.0.0-beta.3/#specification) to manage versions and releases of the library therefore when making a commit please use either `yarn commit <COMMIT_PARAMETERS>` or please feel free to use our git hooks which can be configured using `git config core.hooksPath hooks` and this will guide you through writing a conventional commit message which can be understood work with the ci pipeline
