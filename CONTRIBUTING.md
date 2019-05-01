@@ -1,24 +1,24 @@
 # Contributing
 
-First things first, thank you for your contribution. It's easy to forget to say but I, the other contributors and all the users value the contributions made to the library; small or all large all contributions are valued and welcome.
+First things first, thank you for your contribution. It's easy to forget to say but I, the other contributors and all the users value the contributions made to the library; small or large all contributions are valued and welcome.
 
-When contributing to this repository, please first discuss the change you wish to make via [github issues](https://github.com/ChocPanda/aws-middleware-js/issues), maybe someone has the same idea as you and just up-voting would be a contribution towards prioritisation. You may also find the work has already begun and we can help by teaming up with another contributor.
+When contributing to this repository, please first discuss the change you wish to make via [github issues](https://github.com/ChocPanda/aws-middleware-js/issues), maybe someone has the same idea as you and just up-voting would be a contribution towards prioritisation. You may also find the work has already begun and you can help by teaming up with another contributor.
 
 Please note we have a [code of conduct](#code-of-conduct), please follow it in all your interactions with the project.
 
 ## Pull Request Process
 
 1. Checkout [github issues](https://github.com/ChocPanda/aws-middleware-js/issues) to see if your request has already been made
-2. [Raise a bug](https://github.com/ChocPanda/aws-middleware-js/issues/new?assignees=&labels=&template=bug_report.md&title=)/[feature request](https://github.com/ChocPanda/aws-middleware-js/issues/new?assignees=&labels=&template=feature_request.md&title=) using the appropriate [template](https://github.com/ChocPanda/aws-middleware-js/issues/new/choose).
-3. Assign the task so we know your working on it, and can pitch in.
+2. [Raise a bug](https://github.com/ChocPanda/aws-middleware-js/issues/new?assignees=&labels=&template=bug_report.md&title=) or [feature request](https://github.com/ChocPanda/aws-middleware-js/issues/new?assignees=&labels=&template=feature_request.md&title=) using the appropriate [template](https://github.com/ChocPanda/aws-middleware-js/issues/new/choose).
+3. Assign the task to yourself so we know your working on it, and can pitch in.
 4. Create a branch, and make it happen :persevere:
    - Ensure you're branch is appropriately tested, `yarn run test` or `yarn run test:report` to get coverage data
-   - Linted by according to the [xo config](https://github.com/xojs/xo) `yarn lint:fix`
-5. Update the README.md with details of changes to the interface.
-6. Ensure your using our [convential commits](./README.md#conventional-commits) for your commit messages
+   - Linted according to the [xo config](https://github.com/xojs/xo) with `yarn lint:fix`
+5. Update the README.md with details of the changes.
+6. Ensure you're using our [convential commits](./README.md#conventional-commits) for your commit messages
 7. Versioning and tagging are handled by Circle ci so no need to manually do anything there for the release
-8. RAISE THE PR
-9. You may merge the Pull Request in once you have the sign-off, or if you do not have permission to do that.
+8. [RAISE THE PR](https://github.com/ChocPanda/aws-middleware-js/compare)
+9. You may merge the Pull Request in once you have the sign-off, or if you do not have permission to do that just poke the author.
 
 ## Code of Conduct
 
@@ -44,14 +44,11 @@ include:
 
 Examples of unacceptable behavior by participants include:
 
-* The use of sexualized language or imagery and unwelcome sexual attention or
-advances
+* The use of sexualized language or imagery and unwelcome sexual attention or advances
 * Trolling, insulting/derogatory comments, and personal or political attacks
 * Public or private harassment
-* Publishing others' private information, such as a physical or electronic
-  address, without explicit permission
-* Other conduct which could reasonably be considered inappropriate in a
-  professional setting
+* Publishing others' private information, such as a physical or electronic address, without explicit permission
+* Other conduct which could reasonably be considered inappropriate in a professional setting
 
 ### Our Responsibilities
 
