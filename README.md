@@ -3,7 +3,7 @@
 
 ## CURRENTLY STILL A WORK IN PROGRESS
 
-[![CircleCI](https://img.shields.io/circleci/project/github/ChocPanda/aws-middleware-js/master.svg?style=popout)](https://circleci.com/gh/ChocPanda/aws-middleware-js) [![codecov](https://codecov.io/gh/ChocPanda/aws-middleware-js/branch/master/graph/badge.svg)](https://codecov.io/gh/ChocPanda/aws-middleware-js) [![dependencies](https://david-dm.org/ChocPanda/aws-middleware-js.svg)](https://david-dm.org/ChocPanda/aws-middleware-js) [![license](https://img.shields.io/github/license/ChocPanda/aws-middleware-js.svg?style=popout)](https://github.com/ChocPanda/aws-middleware-js/blob/master/LICENSE) [![XO code style](https://img.shields.io/badge/code_style-XO-5ed9c7.svg)](https://github.com/xojs/xo)
+[![CircleCI](https://img.shields.io/circleci/project/github/ChocPanda/aws-middleware-js/master.svg?style=popout)](https://circleci.com/gh/ChocPanda/aws-middleware-js) [![codecov](https://codecov.io/gh/ChocPanda/aws-middleware-js/branch/master/graph/badge.svg)](https://codecov.io/gh/ChocPanda/aws-middleware-js) [![dependencies](https://david-dm.org/ChocPanda/aws-middleware-js.svg)](https://david-dm.org/ChocPanda/aws-middleware-js) [![license](https://img.shields.io/github/license/ChocPanda/aws-middleware-js.svg?style=popout)](https://github.com/ChocPanda/aws-middleware-js/blob/master/LICENSE) [![XO code style](https://img.shields.io/badge/code_style-XO-5ed9c7.svg)](https://github.com/xojs/xo) [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
 
 An opinionated Middleware and lifecycle framework for building service functions in AWS lambda functions.
 
@@ -172,3 +172,7 @@ This library is designed and written to be as small and lightweight as possible 
 ## Contributions
   
   [Coming soon...](https://github.com/ChocPanda/aws-middleware-js/issues/12)
+
+### Conventional Commits
+
+This project used [conventianal commits](https://www.conventionalcommits.org/en/v1.0.0-beta.3/#specification) to manage versions and releases of the library therefore when making a commit please use either `yarn commit <COMMIT_PARAMETERS>` or please feel free to use our git hooks which can be configured using `git config core.hooksPath hooks` and this will guide you through writing a conventional commit message which can be understood by the ci pipeline
