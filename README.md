@@ -71,8 +71,7 @@ exports.handler = lambda(myAsyncHandler)
 
 #### Middlewares
 
-The value added by the middlewares is that they encapsulate a composable, configurable API for isolating and your wrapping business logic in common boiler plate that would otherwise be cluttering your code base.
-e.g.
+The value of using the middlewares is that they encapsulate a composable, configurable API for isolating and your wrapping business logic in common boiler plate that would otherwise be cluttering your code base.
 
 ```javascript
 const lambda = require('aws-middleware-js');
@@ -101,9 +100,9 @@ exports.handler = lambda(myAsyncHandler)
   .use(httpErrorHandler())
 ```
 
-Lifecycle additions:
+#### Lifecycle additions:
 
-Currently this is just adding an init step to the lambda function, aws-middleware-js lazily evaluates the resource and caches the result for [reuse of the execution enviroment](https://docs.aws.amazon.com/lambda/latest/dg/best-practices.html).
+Currently this is just adding an initialisation step to the lambda function, aws-middleware-js lazily evaluates the resource and caches the result for [reuse of the execution enviroment](https://docs.aws.amazon.com/lambda/latest/dg/best-practices.html).
 
 The lazy evaluation makes mocking/stubbing shared resources much easier for unit testing with frameworks/libraries such as [jest](https://jestjs.io/docs/en/mock-functions#mocking-modules), [sinon](https://sinonjs.org/releases/v7.3.2/mocks/), [simple-mock](https://github.com/jupiter/simple-mock#mock), etc...
 
@@ -131,9 +130,13 @@ const myHandler = s3 => (event, context, callback) => {
 exports.handler = lambda({ init: () => new AWS.S3(), handler: myAsyncHandler });
 ```
 
-## AWS Middleware JS Lifecycle
+## Middleware
 
 - [JSON Body Parser](./src/middlewares/json-body-parser/README.md)
+- Content Negotiation - [Coming soon...](https://github.com/ChocPanda/aws-middleware-js/issues/15)
+- Http Error Handling - [Coming soon...](https://github.com/ChocPanda/aws-middleware-js/issues/14)
+- Http Query Parser - [Coming soon...](https://github.com/ChocPanda/aws-middleware-js/issues/13)
+- [...Your idea here](https://github.com/ChocPanda/aws-middleware-js/issues/new)
 
 ## AWS Middleware JS Lifecycle
 
