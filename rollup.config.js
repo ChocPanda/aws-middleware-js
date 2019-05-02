@@ -3,6 +3,7 @@ import path from 'path';
 import resolve from 'rollup-plugin-node-resolve';
 import commonjs from 'rollup-plugin-commonjs';
 import license from 'rollup-plugin-license';
+import generatePackageJson from 'rollup-plugin-generate-package-json';
 
 const plugins = [
 	resolve(),
@@ -24,7 +25,7 @@ export default [
 			exports: 'default'
 		},
 		external: ['http-errors'],
-		plugins
+		plugins: [...plugins, generatePackageJson({ outputFolder: './dist' })]
 	},
 	// Middlewares
 	{

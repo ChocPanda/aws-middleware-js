@@ -5836,7 +5836,7 @@ read-pkg@^3.0.0:
     normalize-package-data "^2.3.2"
     path-type "^3.0.0"
 
-read-pkg@^4.0.0:
+read-pkg@^4.0.0, read-pkg@^4.0.1:
   version "4.0.1"
   resolved "https://registry.yarnpkg.com/read-pkg/-/read-pkg-4.0.1.tgz#963625378f3e1c4d48c85872b5a6ec7d5d093237"
   integrity sha1-ljYlN48+HE1IyFhytabsfV0JMjc=
@@ -6154,6 +6154,14 @@ rollup-plugin-commonjs@^9.3.4:
     magic-string "^0.25.2"
     resolve "^1.10.0"
     rollup-pluginutils "^2.6.0"
+
+rollup-plugin-generate-package-json@^3.1.2:
+  version "3.1.2"
+  resolved "https://registry.yarnpkg.com/rollup-plugin-generate-package-json/-/rollup-plugin-generate-package-json-3.1.2.tgz#d8e64820f207aff30561673cdf0a92a89298268a"
+  integrity sha512-Un3/rOPgVpVUUHJ85ZMCu/F2pTnW3SGpNjBTx7SSq2g7ppKftFHcCeyBqAjAbOQxbSnzj7nLB1Qo7NXmo9kskA==
+  dependencies:
+    read-pkg "^4.0.1"
+    write-pkg "^3.2.0"
 
 rollup-plugin-license@^0.8.1:
   version "0.8.1"
@@ -7383,7 +7391,7 @@ write-json-file@^2.2.0:
     sort-keys "^2.0.0"
     write-file-atomic "^2.0.0"
 
-write-pkg@^3.1.0:
+write-pkg@^3.1.0, write-pkg@^3.2.0:
   version "3.2.0"
   resolved "https://registry.yarnpkg.com/write-pkg/-/write-pkg-3.2.0.tgz#0e178fe97820d389a8928bc79535dbe68c2cff21"
   integrity sha512-tX2ifZ0YqEFOF1wjRW2Pk93NLsj02+n1UP5RvO6rCs0K6R2g1padvf006cY74PQJKMGS2r42NK7FD0dG6Y6paw==
