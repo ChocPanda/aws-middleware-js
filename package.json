@@ -24,7 +24,8 @@
     "lint": "xo",
     "lint:test": "xo",
     "lint:fix": "xo --fix",
-    "lint:report": "xo --reporter junit > ./reports/xo/test-results.xml"
+    "lint:report": "xo --reporter junit > ./reports/xo/test-results.xml",
+    "release": "semantic-release"
   },
   "devDependencies": {
     "ava": "^1.4.1",
@@ -36,6 +37,7 @@
     "rollup-plugin-commonjs": "^9.3.4",
     "rollup-plugin-license": "^0.8.1",
     "rollup-plugin-node-resolve": "^4.2.3",
+    "semantic-release": "^15.13.3",
     "tap-junit": "^3.1.0",
     "xo": "^0.24.0"
   },
