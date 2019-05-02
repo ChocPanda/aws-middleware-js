@@ -1,4 +1,3 @@
-
 # AWS-MIDDLEWARE-JS
 
 ## CURRENTLY STILL A WORK IN PROGRESS
@@ -12,13 +11,26 @@ An opinionated Middleware and lifecycle framework for building service functions
 This project was inspired by [middy js](https://github.com/middyjs/middy), `a stylish library with some excellent tooling for building service functions`. The project has taken a few of those ideas and attempts to apply a more [functional programming style](https://codeburst.io/functional-programming-in-javascript-e57e7e28c0e5) to their implementation.
 
 ## Contents
+
+<!-- toc -->
+
 - [Usage](#usage)
-- [API](#api)
+  * [API](#api)
+    + [Simple example using callbacks:](#simple-example-using-callbacks)
+    + [Promises](#promises)
+    + [Middlewares](#middlewares)
+  * [Lifecycle additions:](#lifecycle-additions)
 - [Middleware](#middleware)
-- [Lifecycle](#lifecycle-additions)
+- [AWS Middleware JS Lifecycle](#aws-middleware-js-lifecycle)
+- [Why](#why)
+  * [Take advantage of Execution Context reuse to improve the performance of your function](#take-advantage-of-execution-context-reuse-to-improve-the-performance-of-your-function)
+  * [Reduce boilerplate for writing lambda functions](#reduce-boilerplate-for-writing-lambda-functions)
 - [References](#references)
 - [Notes](#notes)
 - [Contributions](#contributions)
+  * [Conventional Commits](#conventional-commits)
+
+<!-- tocstop -->
 
 ## Usage
 

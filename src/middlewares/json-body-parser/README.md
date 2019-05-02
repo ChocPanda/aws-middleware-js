@@ -2,6 +2,16 @@
 
 An [aws-middleware-js](https://github.com/ChocPanda/aws-middleware-js) middleware which parses the request body as json if the `Content-Type` header is set to `application/json` media type according to [RFC 7231](https://tools.ietf.org/html/rfc7231#section-3.1.1.5).
 
+## Contents
+
+<!-- toc -->
+
+- [Example](#example)
+- [Usage](#usage)
+- [Configuration](#configuration)
+
+<!-- tocstop -->
+
 ## Example
 
 Given the event:
