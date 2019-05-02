@@ -82,14 +82,14 @@ jobs:
                 paths:
                     - ./dist
 
-publish-github-release:
-    executor: builder
-    steps:
-      - attach_workspace:
-          at: .
-      - run:
-          name: Publish Release on GitHub
-          command: yarn release -d
+    publish-github-release:
+        executor: builder
+        steps:
+        - attach_workspace:
+            at: .
+        - run:
+            name: Publish Release on GitHub
+            command: yarn release -d
 
 workflows:
     main:
