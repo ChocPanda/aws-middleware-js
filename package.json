@@ -29,8 +29,9 @@
     "docs-toc": "node ./scripts/update-toc.js"
   },
   "files": [
-    "dist/*.js",
-    "dist/*.d.ts"
+    "dist/**/*.js",
+    "dist/**/*.md",
+    "dist/**/*.d.ts"
   ],
   "dependencies": {
     "http-errors": "^1.7.2"
