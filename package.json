@@ -28,6 +28,13 @@
     "release": "semantic-release",
     "docs-toc": "node ./scripts/update-toc.js"
   },
+  "files": [
+    "dist/*.js",
+    "dist/*.d.ts"
+  ],
+  "dependencies": {
+    "http-errors": "^1.7.2"
+  },
   "devDependencies": {
     "@semantic-release/changelog": "^3.0.2",
     "@semantic-release/git": "^7.0.8",
@@ -50,9 +57,6 @@
   },
   "xo": {
     "prettier": "true"
-  },
-  "dependencies": {
-    "http-errors": "^1.7.2"
   },
   "config": {
     "commitizen": {
