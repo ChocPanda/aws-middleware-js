@@ -14,21 +14,26 @@ This project was inspired by [middy js](https://github.com/middyjs/middy), `a st
 
 <!-- toc -->
 
-- [Usage](#usage)
-  * [API](#api)
-    + [Simple example using callbacks:](#simple-example-using-callbacks)
-    + [Promises](#promises)
-    + [Middlewares](#middlewares)
-  * [Lifecycle additions:](#lifecycle-additions)
-- [Middleware](#middleware)
-- [AWS Middleware JS Lifecycle](#aws-middleware-js-lifecycle)
-- [Why](#why)
-  * [Take advantage of Execution Context reuse to improve the performance of your function](#take-advantage-of-execution-context-reuse-to-improve-the-performance-of-your-function)
-  * [Reduce boilerplate for writing lambda functions](#reduce-boilerplate-for-writing-lambda-functions)
-- [References](#references)
-- [Notes](#notes)
-- [Contributions](#contributions)
-  * [Conventional Commits](#conventional-commits)
+- [AWS-MIDDLEWARE-JS](#aws-middleware-js)
+  - [CURRENTLY STILL A WORK IN PROGRESS](#currently-still-a-work-in-progress)
+  - [Inspiration](#inspiration)
+  - [Contents](#contents)
+  - [Usage](#usage)
+    - [API](#api)
+      - [Simple example using callbacks:](#simple-example-using-callbacks)
+      - [Promises](#promises)
+      - [Middlewares](#middlewares)
+    - [Lifecycle additions:](#lifecycle-additions)
+  - [Middleware](#middleware)
+    - [Custom Middlewares](#custom-middlewares)
+  - [AWS Middleware JS Lifecycle](#aws-middleware-js-lifecycle)
+  - [Why](#why)
+    - [Take advantage of Execution Context reuse to improve the performance of your function](#take-advantage-of-execution-context-reuse-to-improve-the-performance-of-your-function)
+    - [Reduce boilerplate for writing lambda functions](#reduce-boilerplate-for-writing-lambda-functions)
+  - [References](#references)
+  - [Notes](#notes)
+  - [Contributions](#contributions)
+    - [Conventional Commits](#conventional-commits)
 
 <!-- tocstop -->
 
@@ -158,6 +163,77 @@ exports.handler = lambda({ init: () => new AWS.S3(), handler: myAsyncHandler });
 - Http Error Handling - [Coming soon...](https://github.com/ChocPanda/aws-middleware-js/issues/14)
 - Http Query Parser - [Coming soon...](https://github.com/ChocPanda/aws-middleware-js/issues/13)
 - [...Your idea here](https://github.com/ChocPanda/aws-middleware-js/issues/new)
+
+### Custom Middlewares
+
+Can't find quite what you're looking for? Why not [consider contributing...](./CONTRIBUTING.md), [raising a feature request](https://github.com/ChocPanda/aws-middleware-js/issues/new?assignees=&labels=&template=feature_request.md&title=) or upvoting an [existing one](https://github.com/ChocPanda/aws-middleware-js/issues) is helpful in itself but if you're in a hurry here's how to create custom middleware.
+The middlewares are all simple javascript objects with **atleast 1** of the following 3 functions:
+
+- **before**: A function called before the handler, used to update/add to the lambda event or context
+```javascript
+/**
+ * @param {AWSLambdaEvent} event aws event triggering the lambda
+ * @param {AWSLambdaContext} context aws runtime/execution context
+ * @returns {(Array|AWSLambdaEvent|undefined)}
+ * 		- An array with 2 elements [newEvent {AWSLambdaEvent}, newContext {AWSLambdaContext}]
+ * 		- A new AWSLambdaEvent
+ * 		- {undefined} if the middleware had no changes to make to the event/context
+ */
+function before(event, context) { // ...function code
+```
+- **after**: A function called after the handler, used to update/add to the lambda response
+```javascript
+/**
+ * @param {AWSLambdaResponse} result the result of having called the lambda function with the given event and context
+ * @param {AWSLambdaEvent} event aws event that triggered the lambda
+ * @param {AWSLambdaContext} context aws runtime/execution context
+ * @returns {(Array|AWSLambdaEvent|undefined)}
+ * 		- An array with 2 elements [newEvent {AWSLambdaEvent}, newContext {AWSLambdaContext}]
+ * 		- A new AWSLambdaEvent
+ * 		- {undefined} if the middleware had no changes to make to the event/context
+ */
+function after(result, event, context) { // ...function code
+```
+- **onError**: A function called in the event the handler or another middleware should throw an exception, used to create a response from the lambda
+```javascript
+/**
+ * @param {Error} error the error that was thrown either by a preceeding middleware or the lambda function
+ * @param {AWSLambdaEvent} event aws event that triggered the lambda prior to the exception being thrown
+ * @param {AWSLambdaContext} context aws runtime/execution context
+ * @returns {(Array|AWSLambdaEvent|undefined)}
+ * 		- An array with 2 elements [newEvent {AWSLambdaEvent}, newContext {AWSLambdaContext}]
+ * 		- A new AWSLambdaEvent
+ * 		- {undefined} if the middleware had no changes to make to the event/context
+ */
+function onError(error, event, context) { // ...function code
+```
+
+Documentation detailing the contents of:
+- [AWSLambdaEvent](https://docs.aws.amazon.com/lambda/latest/dg/lambda-services.html) (Depends on the trigger)
+  - e.g.: [API Gateway](https://docs.aws.amazon.com/apigateway/latest/developerguide/request-response-data-mappings.html#mapping-request-parameters)
+- [AWSLambdaContext](https://docs.aws.amazon.com/lambda/latest/dg/nodejs-prog-model-context.html)
+- AWSLambdaResponse (Depends on the trigger)
+  - e.g.: [API Gateway](https://docs.aws.amazon.com/apigateway/latest/developerguide/request-response-data-mappings.html#mapping-response-parameters)
+- Error
+  - Currently all errors thrown by built in middlewares will be [http-errors](https://github.com/jshttp/http-errors). This is because API gateway is a common trigger for lambdas and the existing middlewares are most useful behind API Gateway. Please [report any non-http-errors](https://github.com/ChocPanda/aws-middleware-js/issues/new?assignees=&labels=&template=bug_report.md&title=) thrown by any built-in middlewares.
+
+```javascript
+const lambdaFunc = require('aws-middleware-js');
+
+const myCustomMiddleware = (middlewareConfig) => ({
+  before: (event, context) => { /* function code... */ },
+  after: (result, event, context) => { /* function code... */ },
+  onError: (error, event, context) => { /* function code... */ }
+});
+
+```
+Once created there is no special transformation of class, just... [use it as you would any other middleware](#api)
+
+```javascript
+const lambdaFunc = require('aws-middleware-js');
+
+export.handler = lambdaFunc(handler).use(myCustomMiddleware(myMiddlewareConfig))
+```
 
 ## AWS Middleware JS Lifecycle
 
