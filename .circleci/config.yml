@@ -89,7 +89,7 @@ publish-github-release:
           at: ./dist
       - run:
           name: "Publish Release on GitHub"
-          command: yarn release
+          command: yarn release -d
 
 workflows:
     main:
