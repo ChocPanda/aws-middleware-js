@@ -216,8 +216,8 @@ exports.handler = lambda({
 ## Middleware
 
 - [JSON Body Parser](./src/middlewares/json-body-parser/README.md)
+- [Http Error Handling](./src/middlewares/http-error-handler/README.md)
 - Content Negotiation - [Coming soon...](https://github.com/ChocPanda/aws-middleware-js/issues/15)
-- Http Error Handling - [Coming soon...](https://github.com/ChocPanda/aws-middleware-js/issues/14)
 - Http Query Parser - [Coming soon...](https://github.com/ChocPanda/aws-middleware-js/issues/13)
 - [...Your idea here](https://github.com/ChocPanda/aws-middleware-js/issues/new)
 
