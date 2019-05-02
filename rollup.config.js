@@ -29,7 +29,7 @@ export default [
 			...plugins,
 			generatePackageJson({
 				outputFolder: './dist',
-				baseContent: {
+				baseContents: {
 					name: 'aws-middleware-js',
 					description:
 						'An opinionated Middleware and lifecycle framework for build AWS Lambdas',
