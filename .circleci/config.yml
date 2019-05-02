@@ -105,5 +105,7 @@ workflows:
                 requires:
                     - build
                 filters:
-                    branches: master
-                    tags: /^\d+\.\d+\.\d+$/
+                    branches:
+                        only: master
+                    tags:
+                        only: /^\d+\.\d+\.\d+$/
