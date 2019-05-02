@@ -77,6 +77,20 @@ jobs:
                 command: 'yarn build'
             - store_artifacts:
                 path: ./dist
+            - persist_to_workspace:
+                root: .
+                paths:
+                    - ./dist
+
+    publish-github-release:
+        executor: builder
+        steps:
+        - attach_workspace:
+            at: .
+        - run:
+            name: Publish Release on GitHub
+            command: yarn release -d
+
 workflows:
     main:
         jobs:
@@ -87,3 +101,11 @@ workflows:
                 requires: [ setup ]
             - build:
                 requires: [ lint, test ]
+            - publish-github-release:
+                requires:
+                    - build
+                filters:
+                    branches:
+                        only: master
+                    tags:
+                        only: /^\d+\.\d+\.\d+$/
