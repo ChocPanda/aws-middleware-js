@@ -184,4 +184,4 @@ See our [contributing doc](./CONTRIBUTING.md), be sure to checkout the [code of 
 
 ### Conventional Commits
 
-This project used [conventianal commits](https://www.conventionalcommits.org/en/v1.0.0-beta.3/#specification) to manage versions and releases of the library therefore when making a commit please use either `yarn commit <COMMIT_PARAMETERS>` or please feel free to use our git hooks which can be configured using `git config core.hooksPath hooks` and this will guide you through writing a conventional commit message which can be understood work with the ci pipeline
+This project used [conventianal commits](https://www.conventionalcommits.org/en/v1.0.0-beta.3/#specification) to manage versions and releases of the library therefore when making a commit please use `yarn commit <COMMIT_PARAMETERS>` and this will guide you through writing a conventional commit message which can be understood work with the ci pipeline
