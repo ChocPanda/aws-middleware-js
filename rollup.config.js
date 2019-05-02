@@ -25,7 +25,28 @@ export default [
 			exports: 'default'
 		},
 		external: ['http-errors'],
-		plugins: [...plugins, generatePackageJson({ outputFolder: './dist' })]
+		plugins: [
+			...plugins,
+			generatePackageJson({
+				outputFolder: './dist',
+				baseContent: ({
+					name: 'aws-middleware-js',
+  				description: 'An opinionated Middleware and lifecycle framework for build AWS Lambdas',
+  				main: 'src/index.js',
+  				author: 'ChocPanda',
+  				repository: 'github:ChocPanda/aws-middleware-js',
+  				bugs: 'https://github.com/ChocPanda/aws-middleware-js/issues',
+  				keywords: [
+						'aws',
+						'lambda',
+						'middleware',
+						'faas'
+						],
+					license: 'MIT',
+					private: false,
+				})
+			})
+		]
 	},
 	// Middlewares
 	{
