@@ -4,6 +4,12 @@ module.exports = {
 		'@semantic-release/commit-analyzer',
 		'@semantic-release/release-notes-generator',
 		[
+			'@semantic-release/changelog',
+			{
+				changelogFile: 'CHANGELOG.md'
+			}
+		],
+		[
 			'@semantic-release/npm',
 			{
 				npmPublish: false,
@@ -12,9 +18,16 @@ module.exports = {
 			}
 		],
 		[
+			'@semantic-release/git',
+			{
+				message:
+					'chore(release): ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}' // eslint-disable-line no-template-curly-in-string
+			}
+		],
+		[
 			'@semantic-release/github',
 			{
-				assets: 'dist/*.tgz'
+				assets: ['dist/**/*', '**/README.md', 'package.json']
 			}
 		]
 	]

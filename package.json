@@ -29,6 +29,8 @@
     "docs-toc": "node ./scripts/update-toc.js"
   },
   "devDependencies": {
+    "@semantic-release/changelog": "^3.0.2",
+    "@semantic-release/git": "^7.0.8",
     "ava": "^1.4.1",
     "commitizen": "^3.1.1",
     "cz-conventional-changelog": "2.1.0",
@@ -38,7 +40,6 @@
     "path": "^0.12.7",
     "rollup": "^1.10.1",
     "rollup-plugin-commonjs": "^9.3.4",
-    "rollup-plugin-generate-package-json": "^3.1.2",
     "rollup-plugin-license": "^0.8.1",
     "rollup-plugin-node-resolve": "^4.2.3",
     "semantic-release": "^15.13.3",

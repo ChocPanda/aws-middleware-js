@@ -3,7 +3,6 @@ import path from 'path';
 import resolve from 'rollup-plugin-node-resolve';
 import commonjs from 'rollup-plugin-commonjs';
 import license from 'rollup-plugin-license';
-import generatePackageJson from 'rollup-plugin-generate-package-json';
 
 const plugins = [
 	resolve(),
@@ -25,24 +24,7 @@ export default [
 			exports: 'default'
 		},
 		external: ['http-errors'],
-		plugins: [
-			...plugins,
-			generatePackageJson({
-				outputFolder: './dist',
-				baseContents: {
-					name: 'aws-middleware-js',
-					description:
-						'An opinionated Middleware and lifecycle framework for build AWS Lambdas',
-					main: 'src/index.js',
-					author: 'ChocPanda',
-					repository: 'github:ChocPanda/aws-middleware-js',
-					bugs: 'https://github.com/ChocPanda/aws-middleware-js/issues',
-					keywords: ['aws', 'lambda', 'middleware', 'faas'],
-					license: 'MIT',
-					private: false
-				}
-			})
-		]
+		plugins
 	},
 	// Middlewares
 	{
