@@ -86,9 +86,9 @@ publish-github-release:
     executor: builder
     steps:
       - attach_workspace:
-          at: ./dist
+          at: .
       - run:
-          name: "Publish Release on GitHub"
+          name: Publish Release on GitHub
           command: yarn release -d
 
 workflows:
@@ -105,7 +105,5 @@ workflows:
                 requires:
                     - build
                 filters:
-                    branches:
-                    ignore: /.*/
-                    tags:
-                    only: /^\d+\.\d+\.\d+$/
+                    branches: master
+                    tags: /^\d+\.\d+\.\d+$/
