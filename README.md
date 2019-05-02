@@ -286,8 +286,6 @@ const myCustomMiddleware = (middlewareConfig) => ({
 Once created there is no special transformation or class, just... [use it as you would any other middleware](#api)
 
 ```javascript
-const lambdaFunc = require('aws-middleware-js');
-
 export.handler = lambdaFunc(handler).use(myCustomMiddleware(myMiddlewareConfig))
 ```
 
