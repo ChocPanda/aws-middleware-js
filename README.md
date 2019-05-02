@@ -167,6 +167,7 @@ exports.handler = lambda({ init: () => new AWS.S3(), handler: myAsyncHandler });
 ### Custom Middlewares
 
 Can't find quite what you're looking for? Why not [consider contributing...](./CONTRIBUTING.md), [raising a feature request](https://github.com/ChocPanda/aws-middleware-js/issues/new?assignees=&labels=&template=feature_request.md&title=) or upvoting an [existing one](https://github.com/ChocPanda/aws-middleware-js/issues) is helpful in itself but if you're in a hurry here's how to create custom middleware.
+
 The middlewares are all simple javascript objects with **atleast 1** of the following 3 functions:
 
 - **before**: A function called before the handler, used to update/add to the lambda event or context
@@ -227,7 +228,7 @@ const myCustomMiddleware = (middlewareConfig) => ({
 });
 
 ```
-Once created there is no special transformation of class, just... [use it as you would any other middleware](#api)
+Once created there is no special transformation or class, just... [use it as you would any other middleware](#api)
 
 ```javascript
 const lambdaFunc = require('aws-middleware-js');
@@ -235,9 +236,12 @@ const lambdaFunc = require('aws-middleware-js');
 export.handler = lambdaFunc(handler).use(myCustomMiddleware(myMiddlewareConfig))
 ```
 
+All of the middlewares function can be either synchronous or asynchronous, it's up to you and your use case.
+
 ## AWS Middleware JS Lifecycle
 
 AWS Middleware JS provides a lifecycle for use when building service functions, the motivation for this was to make the lambdas more testable by removing side effects from the lambda files.
+![Lifecycle diagram](images/aws-middleware.svg)
 
 ## Why
 
