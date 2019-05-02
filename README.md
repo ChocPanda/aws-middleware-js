@@ -241,6 +241,7 @@ All of the middlewares function can be either synchronous or asynchronous, it's 
 ## AWS Middleware JS Lifecycle
 
 AWS Middleware JS provides a lifecycle for use when building service functions, the motivation for this was to make the lambdas more testable by removing side effects from the lambda files.
+
 ![Lifecycle diagram](images/aws-middleware.svg)
 
 ## Why
