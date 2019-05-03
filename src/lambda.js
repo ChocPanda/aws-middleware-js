@@ -1,6 +1,7 @@
 const {
 	normalizePreExecutionMiddleware,
 	normalizePostExecutionMiddleware,
+	normalizeErrorExecutionMiddleware,
 	reduceMiddlewares
 } = require('./middlewares/utils');
 
@@ -21,7 +22,7 @@ const traverseAndNormalize = middlewares => (
 				? [...postExMiddlewares, normalizePostExecutionMiddleware(after)]
 				: postExMiddlewares,
 			errorMiddlewares: onError
-				? [...errorMiddlewares, normalizePostExecutionMiddleware(onError)]
+				? [...errorMiddlewares, normalizeErrorExecutionMiddleware(onError)]
 				: errorMiddlewares
 		}),
 		{
