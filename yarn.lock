@@ -803,6 +803,14 @@ autolinker@~0.15.0:
   resolved "https://registry.yarnpkg.com/autolinker/-/autolinker-0.15.3.tgz#342417d8f2f3461b14cf09088d5edf8791dc9832"
   integrity sha1-NCQX2PLzRhsUzwkIjV7fh5HcmDI=
 
+ava-env@^1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/ava-env/-/ava-env-1.1.1.tgz#70bd2f9b33d8d7b8a98a7e0d08efd36e52837a20"
+  integrity sha512-QgTwML7y9+RZplLnifnZEOH4F3HFELmCcPQMOWJD/pKIayzI6VxuDujMeuiwzW2huronl/ERJQ78kHKV6AGMNQ==
+  dependencies:
+    ava "^1.4.1"
+    lodash.clonedeep "^4.5.0"
+
 ava@^1.4.1:
   version "1.4.1"
   resolved "https://registry.yarnpkg.com/ava/-/ava-1.4.1.tgz#4a59289e0c9728e492ec3a5be21d1072636be172"
