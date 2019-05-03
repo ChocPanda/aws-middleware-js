@@ -122,7 +122,7 @@ test('Wrapped lambda function - should rethrow exceptions from pre-execution mid
 			before: () => {
 				throw new Error('bang');
 			},
-			onError: error => error
+			onError: (res, error) => [res, error]
 		}
 	];
 
@@ -213,7 +213,7 @@ test('Wrapped lambda function - should rethrow exceptions from post-execution mi
 			after: () => {
 				throw new Error('bang');
 			},
-			onError: error => error
+			onError: error => [error]
 		}
 	];
 
@@ -308,7 +308,7 @@ test('Wrapped lambda function - should rethrow exceptions thrown by the handler 
 		throw new Error('bang');
 	});
 	const stubCallback = t.context.stub();
-	const stubMiddlewares = [{ onError: error => error }];
+	const stubMiddlewares = [{ onError: error => [error] }];
 
 	const lambdaFunc = lambda({
 		handler: stubHandler,

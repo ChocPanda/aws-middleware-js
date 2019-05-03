@@ -2,6 +2,7 @@ const test = require('ninos')(require('ava'));
 const {
 	normalizePreExecutionMiddleware,
 	normalizePostExecutionMiddleware,
+	normalizeErrorExecutionMiddleware,
 	reduceMiddlewares
 } = require('../utils');
 
@@ -117,6 +118,84 @@ postExecutionTestMacro.title = inputDesc =>
 	({ desc, middleware, expectedResult, expectedEvent, expectedContext }) =>
 		test(desc, postExecutionTestMacro, middleware, [
 			expectedResult,
+			expectedEvent,
+			expectedContext
+		])
+);
+
+/**
+ * Normalize Error-Execution Middlewares
+ */
+
+const errorExecutionTestMacro = async (t, middleware, expectedArgs) => {
+	const normalizedMiddleware = normalizeErrorExecutionMiddleware(middleware);
+	const middlewareResult = await normalizedMiddleware(
+		'result',
+		'error',
+		'event',
+		'context'
+	);
+
+	t.deepEqual(middlewareResult, expectedArgs);
+};
+
+errorExecutionTestMacro.title = inputDesc =>
+	`Error-Execution middlewares - returning ${inputDesc} - should be normalized to return an array with the transformed error and result`;
+
+[
+	{
+		desc: 'an array with a result, transformed error, event and context',
+		middleware: () => ['new result', 'new error', 'new event', 'new context'],
+		expectedResult: 'new result',
+		expectedError: 'new error',
+		expectedEvent: 'new event',
+		expectedContext: 'new context'
+	},
+	{
+		desc:
+			'an array with an unchanged result, transformed error but event or context',
+		middleware: res => [res, 'new error'],
+		expectedResult: 'result',
+		expectedError: 'new error',
+		expectedEvent: 'event',
+		expectedContext: 'context'
+	},
+	{
+		desc: 'a new result',
+		middleware: () => 'new result',
+		expectedResult: 'new result',
+		expectedError: 'error',
+		expectedEvent: 'event',
+		expectedContext: 'context'
+	},
+	{
+		desc: 'an empty array with no error or result',
+		middleware: () => [],
+		expectedResult: 'result',
+		expectedError: 'error',
+		expectedEvent: 'event',
+		expectedContext: 'context'
+	},
+	{
+		desc: 'void',
+		middleware: () => {},
+		expectedResult: 'result',
+		expectedError: 'error',
+		expectedEvent: 'event',
+		expectedContext: 'context'
+	}
+].forEach(
+	({
+		desc,
+		middleware,
+		expectedResult,
+		expectedError,
+		expectedEvent,
+		expectedContext
+	}) =>
+		test(desc, errorExecutionTestMacro, middleware, [
+			expectedResult,
+			expectedError,
 			expectedEvent,
 			expectedContext
 		])
