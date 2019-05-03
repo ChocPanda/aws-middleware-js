@@ -1,3 +1,10 @@
+## [2.0.1](https://github.com/ChocPanda/aws-middleware-js/compare/v2.0.0...v2.0.1) (2019-05-03)
+
+
+### Bug Fixes
+
+* **entry-point:** Fix the package entry point ([a9df6cb](https://github.com/ChocPanda/aws-middleware-js/commit/a9df6cb)), closes [#11](https://github.com/ChocPanda/aws-middleware-js/issues/11)
+
 # [2.0.0](https://github.com/ChocPanda/aws-middleware-js/compare/v1.2.0...v2.0.0) (2019-05-03)
 
 
