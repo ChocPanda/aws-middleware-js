@@ -220,14 +220,11 @@ Documentation detailing the contents of:
   - Currently all errors thrown by built in middlewares will be [http-errors](https://github.com/jshttp/http-errors). This is because API gateway is a common trigger for lambdas and the existing middlewares are most useful behind API Gateway. Please [report any non-http-errors](https://github.com/ChocPanda/aws-middleware-js/issues/new?assignees=&labels=&template=bug_report.md&title=) thrown by any built-in middlewares.
 
 ```javascript
-const lambdaFunc = require('aws-middleware-js');
-
 const myCustomMiddleware = (middlewareConfig) => ({
   before: (event, context) => { /* function code... */ },
   after: (result, event, context) => { /* function code... */ },
   onError: (error, event, context) => { /* function code... */ }
 });
-
 ```
 Once created there is no special transformation or class, just... [use it as you would any other middleware](#api)
 
