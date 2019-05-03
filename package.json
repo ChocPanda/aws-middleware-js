@@ -30,7 +30,7 @@
   },
   "files": [
     "dist/**/*.js",
-    "dist/**/*.md",
+    "**/*.md",
     "dist/**/*.d.ts"
   ],
   "dependencies": {
