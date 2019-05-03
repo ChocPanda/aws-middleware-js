@@ -29,16 +29,19 @@ const normalizePostExecutionMiddleware = middleware => async (
 };
 
 const normalizeErrorExecutionMiddleware = middleware => async (
+	result,
 	error,
-	result = {},
 	event,
 	context
 ) => {
-	const middlewareRes = await middleware(error, result, event, context);
-	const [newError = error, newResult = result] = Array.isArray(middlewareRes)
-		? middlewareRes
-		: [middlewareRes, event, context];
-	return [newError, newResult];
+	const middlewareRes = await middleware(result, error, event, context);
+	const [
+		newResult = result,
+		newError = error,
+		newEvent = event,
+		newContext = context
+	] = Array.isArray(middlewareRes) ? middlewareRes : [middlewareRes, error];
+	return [newResult, newError, newEvent, newContext];
 };
 
 const reduceMiddlewares = ({ errorHandler, middlewares }) => async (...args) =>

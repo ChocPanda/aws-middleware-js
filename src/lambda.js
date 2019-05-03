@@ -36,18 +36,20 @@ const createErrorHandler = errorMiddlewares => (
 	event,
 	context
 ) => async error => {
-	const errorResult = await reduceMiddlewares({
+	const middlewareRes = await reduceMiddlewares({
 		middlewares: errorMiddlewares,
 		errorHandler: err => {
 			throw err;
 		}
-	})(error, event, context);
+	})(undefined, error, event, context);
 
-	if (errorResult[0] instanceof Error) {
-		throw errorResult[0];
+	const [result, transformedError] = middlewareRes;
+
+	if (result) {
+		return middlewareRes;
 	}
 
-	return errorResult;
+	throw transformedError;
 };
 
 const createLambdaFunc = ({
@@ -97,7 +99,6 @@ const createLambdaFunc = ({
 		}
 
 		const [modifiedEvent, modifiedContext] = beforeResult;
-
 		/**
 		 * AWS provides a flexible API for the authors of lambdas:
 		 * https://docs.aws.amazon.com/lambda/latest/dg/nodejs-prog-model-handler.html,
