@@ -166,7 +166,7 @@ exports.handler = lambda({ init: () => new AWS.S3(), handler: myAsyncHandler });
 
 ### Custom Middlewares
 
-Can't find quite what you're looking for? Why not [consider contributing...](./CONTRIBUTING.md), [raising a feature request](https://github.com/ChocPanda/aws-middleware-js/issues/new?assignees=&labels=&template=feature_request.md&title=) or upvoting an [existing one](https://github.com/ChocPanda/aws-middleware-js/issues) is helpful in itself but if you're in a hurry here's how to create custom middleware.
+Can't find quite what you're looking for? Why not [consider contributing...](./CONTRIBUTING.md), [raising a feature request](https://github.com/ChocPanda/aws-middleware-js/issues/new?assignees=&labels=&template=feature_request.md&title=) or upvoting an [existing one](https://github.com/ChocPanda/aws-middleware-js/issues) counts and is helpful in prioritisation, but if you're in a hurry here's how to create custom middleware.
 
 The middlewares are all simple javascript objects with **atleast 1** of the following 3 functions:
 
@@ -188,9 +188,9 @@ function before(event, context) { // ...function code
  * @param {AWSLambdaResponse} result the result of having called the lambda function with the given event and context
  * @param {AWSLambdaEvent} event aws event that triggered the lambda
  * @param {AWSLambdaContext} context aws runtime/execution context
- * @returns {(Array|AWSLambdaEvent|undefined)}
- * 		- An array with 2 elements [newEvent {AWSLambdaEvent}, newContext {AWSLambdaContext}]
- * 		- A new AWSLambdaEvent
+ * @returns {(Array|AWSLambdaResponse|undefined)}
+ * 		- An array with 2 elements [newEvent {AWSLambdaResponse}, newContext {AWSLambdaContext}]
+ * 		- A new AWSLambdaResponse
  * 		- {undefined} if the middleware had no changes to make to the event/context
  */
 function after(result, event, context) { // ...function code
@@ -198,15 +198,16 @@ function after(result, event, context) { // ...function code
 - **onError**: A function called in the event the handler or another middleware should throw an exception, used to create a response from the lambda
 ```javascript
 /**
+ * @param {AWSLambdaResponse} result the accumulated response of other error handling middlewares
  * @param {Error} error the error that was thrown either by a preceeding middleware or the lambda function
  * @param {AWSLambdaEvent} event aws event that triggered the lambda prior to the exception being thrown
  * @param {AWSLambdaContext} context aws runtime/execution context
- * @returns {(Array|AWSLambdaEvent|undefined)}
- * 		- An array with 2 elements [newEvent {AWSLambdaEvent}, newContext {AWSLambdaContext}]
- * 		- A new AWSLambdaEvent
+ * @returns {(Array|AWSLambdaResponse|undefined)}
+ * 		- An array with 2 elements [new result {AWSLambdaResponse}, new Error {Error}]
+ * 		- A new result {AWSLambdaResponse}
  * 		- {undefined} if the middleware had no changes to make to the event/context
  */
-function onError(error, event, context) { // ...function code
+function onError(result, error, event, context) { // ...function code
 ```
 
 Documentation detailing the contents of:
@@ -219,14 +220,11 @@ Documentation detailing the contents of:
   - Currently all errors thrown by built in middlewares will be [http-errors](https://github.com/jshttp/http-errors). This is because API gateway is a common trigger for lambdas and the existing middlewares are most useful behind API Gateway. Please [report any non-http-errors](https://github.com/ChocPanda/aws-middleware-js/issues/new?assignees=&labels=&template=bug_report.md&title=) thrown by any built-in middlewares.
 
 ```javascript
-const lambdaFunc = require('aws-middleware-js');
-
 const myCustomMiddleware = (middlewareConfig) => ({
   before: (event, context) => { /* function code... */ },
   after: (result, event, context) => { /* function code... */ },
   onError: (error, event, context) => { /* function code... */ }
 });
-
 ```
 Once created there is no special transformation or class, just... [use it as you would any other middleware](#api)
 

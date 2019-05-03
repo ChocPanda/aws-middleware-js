@@ -28,6 +28,22 @@ const normalizePostExecutionMiddleware = middleware => async (
 	return [newResult, newEvent, newContext];
 };
 
+const normalizeErrorExecutionMiddleware = middleware => async (
+	result,
+	error,
+	event,
+	context
+) => {
+	const middlewareRes = await middleware(result, error, event, context);
+	const [
+		newResult = result,
+		newError = error,
+		newEvent = event,
+		newContext = context
+	] = Array.isArray(middlewareRes) ? middlewareRes : [middlewareRes, error];
+	return [newResult, newError, newEvent, newContext];
+};
+
 const reduceMiddlewares = ({ errorHandler, middlewares }) => async (...args) =>
 	middlewares.reduce(async (currPromise, middleware) => {
 		const currResult = await currPromise;
@@ -52,5 +68,6 @@ ExtendedHttpError.prototype = Object.create(HttpError.prototype);
 
 module.exports.normalizePreExecutionMiddleware = normalizePreExecutionMiddleware;
 module.exports.normalizePostExecutionMiddleware = normalizePostExecutionMiddleware;
+module.exports.normalizeErrorExecutionMiddleware = normalizeErrorExecutionMiddleware;
 module.exports.reduceMiddlewares = reduceMiddlewares;
 module.exports.createHttpError = (...args) => new ExtendedHttpError(...args);
