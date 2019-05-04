@@ -2,7 +2,16 @@
 
 ## CURRENTLY STILL A WORK IN PROGRESS
 
-[![CircleCI](https://img.shields.io/circleci/project/github/ChocPanda/aws-middleware-js/master.svg?style=popout)](https://circleci.com/gh/ChocPanda/aws-middleware-js) [![codecov](https://codecov.io/gh/ChocPanda/aws-middleware-js/branch/master/graph/badge.svg)](https://codecov.io/gh/ChocPanda/aws-middleware-js) [![dependencies](https://david-dm.org/ChocPanda/aws-middleware-js.svg)](https://david-dm.org/ChocPanda/aws-middleware-js) [![license](https://img.shields.io/github/license/ChocPanda/aws-middleware-js.svg?style=popout)](https://github.com/ChocPanda/aws-middleware-js/blob/master/LICENSE) [![XO code style](https://img.shields.io/badge/code_style-XO-5ed9c7.svg)](https://github.com/xojs/xo) [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/) [![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg)](https://github.com/semantic-release/semantic-release) [![Greenkeeper badge](https://badges.greenkeeper.io/ChocPanda/aws-middleware-js.svg)](https://greenkeeper.io/)
+<p align="center">
+  <a href="https://circleci.com/gh/ChocPanda/aws-middleware-js" alt="CircleCI"> <img src="https://img.shields.io/circleci/project/github/ChocPanda/aws-middleware-js/master.svg?style=popout"/></a>
+  <a href="https://codecov.io/gh/ChocPanda/aws-middleware-js" alt="codecov"> <img src="https://codecov.io/gh/ChocPanda/aws-middleware-js/branch/master/graph/badge.svg"/></a>
+  <a href="https://david-dm.org/ChocPanda/aws-middleware-js" alt="dependencies"> <img src="https://david-dm.org/ChocPanda/aws-middleware-js.svg"/></a>
+  <a href="https://github.com/ChocPanda/aws-middleware-js/blob/master/LICENSE" alt="license"> <img src="https://img.shields.io/github/license/ChocPanda/aws-middleware-js.svg?style=popout"/></a>
+  <a href="https://github.com/xojs/xo" alt="XO code style"><img src="https://img.shields.io/badge/code_style-XO-5ed9c7.svg"/></a>
+  <a href="http://commitizen.github.io/cz-cli/" alt="Commitizen friendly" ><img src="https://img.shields.io/badge/commitizen-friendly-brightgreen.svg"/></a>
+  <a href="https://github.com/semantic-release/semantic-release" alt="semantic-release"><img src="https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg"/></a>
+  <a href="https://greenkeeper.io/" alt="Greenkeeper badge" ><img src="https://badges.greenkeeper.io/ChocPanda/aws-middleware-js.svg"/></a>
+</p>
 
 An opinionated Middleware and lifecycle framework for building service functions in AWS lambda functions.
 
