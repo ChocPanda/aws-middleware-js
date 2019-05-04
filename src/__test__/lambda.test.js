@@ -481,11 +481,13 @@ test('...', async t => {
 		error: t.context.stub(),
 		trace: t.context.stub()
 	};
-	const stubMiddlewares = [{
-		before: () => {},
-		after: () => {},
-		onError: () => {}
-	}];
+	const stubMiddlewares = [
+		{
+			before: () => {},
+			after: () => {},
+			onError: () => {}
+		}
+	];
 
 	const lambdaFunc = lambda({
 		handler: stubHandler,
