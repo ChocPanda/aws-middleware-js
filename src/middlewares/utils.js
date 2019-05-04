@@ -44,9 +44,22 @@ const normalizeErrorExecutionMiddleware = middleware => async (
 	return [newResult, newError, newEvent, newContext];
 };
 
-const reduceMiddlewares = ({ errorHandler, middlewares }) => async (...args) =>
+const nullLogger = {
+	info: () => {},
+	debug: () => {},
+	warn: () => {},
+	error: () => {},
+	trace: () => {}
+};
+
+const reduceMiddlewares = ({
+	errorHandler,
+	middlewares,
+	logger = nullLogger
+}) => async (...args) =>
 	middlewares.reduce(async (currPromise, middleware) => {
 		const currResult = await currPromise;
+		logger.trace('Executing middleware, current parameters:', currResult);
 		try {
 			return await middleware(...currResult);
 		} catch (error) {
@@ -71,3 +84,4 @@ module.exports.normalizePostExecutionMiddleware = normalizePostExecutionMiddlewa
 module.exports.normalizeErrorExecutionMiddleware = normalizeErrorExecutionMiddleware;
 module.exports.reduceMiddlewares = reduceMiddlewares;
 module.exports.createHttpError = (...args) => new ExtendedHttpError(...args);
+module.exports.nullLogger = nullLogger;

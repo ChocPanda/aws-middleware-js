@@ -2,7 +2,8 @@ const {
 	normalizePreExecutionMiddleware,
 	normalizePostExecutionMiddleware,
 	normalizeErrorExecutionMiddleware,
-	reduceMiddlewares
+	reduceMiddlewares,
+	nullLogger
 } = require('./middlewares/utils');
 
 const traverseAndNormalize = middlewares => (
@@ -32,12 +33,19 @@ const traverseAndNormalize = middlewares => (
 		}
 	);
 
-const createErrorHandler = errorMiddlewares => (
+const createErrorHandler = (errorMiddlewares, logger) => (
 	event,
 	context
 ) => async error => {
+	logger.warn(
+		'Caught an exception, attempting to use error handling middleware to create a response',
+		error,
+		event,
+		context
+	);
 	const middlewareRes = await reduceMiddlewares({
 		middlewares: errorMiddlewares,
+		logger,
 		errorHandler: err => {
 			throw err;
 		}
@@ -49,6 +57,14 @@ const createErrorHandler = errorMiddlewares => (
 		return middlewareRes;
 	}
 
+	logger.error(
+		'Failed to handle exception and generate a response',
+		transformedError
+	);
+	if (logger.group) {
+		logger.groupEnd();
+	}
+
 	throw transformedError;
 };
 
@@ -56,6 +72,7 @@ const createLambdaFunc = ({
 	init,
 	handler,
 	middlewares,
+	logger = nullLogger,
 	before = [],
 	after = [],
 	onError = []
@@ -66,16 +83,28 @@ const createLambdaFunc = ({
 		errorMiddlewares
 	} = traverseAndNormalize(middlewares)(before, after, onError);
 
-	const errorHandler = createErrorHandler(errorMiddlewares);
+	const errorHandler = createErrorHandler(errorMiddlewares, logger);
 
 	let cachedHandler;
 
 	const lambdaFunc = async (event, context, callback) => {
+		if (logger.group) {
+			logger.group(`${context.functionName} - ${context.awsRequestId}`);
+		}
+
+		logger.info(
+			`Lambda function invocation: ${
+				cachedHandler ? 'using cached execution context' : 'cold start'
+			}`,
+			event,
+			context
+		);
 		cachedHandler =
 			cachedHandler || (cachedHandler = init ? handler(init()) : handler);
 
 		const beforeResult = await reduceMiddlewares({
 			middlewares: preExMiddlewares,
+			logger,
 			errorHandler
 		})(event, context);
 
@@ -95,10 +124,30 @@ const createLambdaFunc = ({
 		 * Todo find a less cryptic way of expressing this
 		 */
 		if (beforeResult.length > 2) {
-			return beforeResult[0];
+			const [errorResult, error, errorEvent, errorContext] = beforeResult;
+			logger.error(
+				'Caught and handled an exception during the execution of the pre-execution middlewares',
+				error
+			);
+			logger.info(
+				'Returning error response',
+				errorResult,
+				errorEvent,
+				errorContext
+			);
+			if (logger.group) {
+				logger.groupEnd();
+			}
+
+			return errorResult;
 		}
 
 		const [modifiedEvent, modifiedContext] = beforeResult;
+		logger.debug(
+			'Completed execution of the pre-execution middlewares',
+			modifiedEvent,
+			modifiedContext
+		);
 		/**
 		 * AWS provides a flexible API for the authors of lambdas:
 		 * https://docs.aws.amazon.com/lambda/latest/dg/nodejs-prog-model-handler.html,
@@ -111,7 +160,7 @@ const createLambdaFunc = ({
 		 * will use the flag to behave in the same way.
 		 */
 		const [
-			{ callbackFlag = false, errorFlag = false },
+			{ callbackFlag = false, error: executionError },
 			result
 		] = await new Promise(resolve =>
 			resolve(
@@ -128,17 +177,52 @@ const createLambdaFunc = ({
 					modifiedEvent,
 					modifiedContext
 				)(error);
-				return [{ errorFlag: true }, errorResult];
+				return [{ error }, errorResult];
 			});
 
-		if (errorFlag) {
+		if (executionError) {
+			logger.error(
+				'Caught and handled an exception during the execution of the lambda function',
+				executionError
+			);
+			logger.info(
+				'Returning error response',
+				result,
+				modifiedEvent,
+				modifiedContext
+			);
+			if (logger.group) {
+				logger.groupEnd();
+			}
+
 			return result;
 		}
 
-		const [modifiedResult] = await reduceMiddlewares({
+		const postMiddlewareRes = await reduceMiddlewares({
 			middlewares: postExMiddlewares,
+			logger,
 			errorHandler
 		})(result, modifiedEvent, modifiedContext);
+
+		if (postMiddlewareRes.length === 4) {
+			const [errorResult, error, errorEvent, errorContext] = beforeResult;
+			logger.error(
+				'Caught and handled an exception during the execution of the post-execution middlewares',
+				error
+			);
+			logger.info(
+				'Returning error response',
+				errorResult,
+				errorEvent,
+				errorContext
+			);
+		}
+
+		const [modifiedResult] = postMiddlewareRes;
+		logger.info('Completed Lambda exection', modifiedResult);
+		if (logger.group) {
+			logger.groupEnd();
+		}
 
 		if (callbackFlag) {
 			return callback(modifiedResult);
@@ -151,9 +235,21 @@ const createLambdaFunc = ({
 		createLambdaFunc({
 			init,
 			handler,
+			logger,
 			middlewares: Array.isArray(newMiddlewares)
 				? newMiddlewares
 				: [newMiddlewares],
+			before: preExMiddlewares,
+			after: postExMiddlewares,
+			onError: errorMiddlewares
+		});
+
+	lambdaFunc.withLogger = logger =>
+		createLambdaFunc({
+			init,
+			handler,
+			logger,
+			middlewares: [],
 			before: preExMiddlewares,
 			after: postExMiddlewares,
 			onError: errorMiddlewares
