@@ -4840,10 +4840,10 @@ nice-try@^1.0.4:
   resolved "https://registry.yarnpkg.com/nice-try/-/nice-try-1.0.5.tgz#a3378a7696ce7d223e88fc9b764bd7ef1089e366"
   integrity sha512-1nh45deeb5olNY7eX82BkPO7SSxR5SSYJiPTrTdFUVYwAl8CKMA5N9PjTYkHiRjisVcxcQ1HXdLhx2qxxJzLNQ==
 
-ninos@^2.0.2:
-  version "2.0.2"
-  resolved "https://registry.yarnpkg.com/ninos/-/ninos-2.0.2.tgz#4900452927b2a4367e00c98d3374c32d383315d0"
-  integrity sha512-cZ93DIgHImup3ML0sK/9SQy3l7e/Gvl4JCm9gDy2FnxaGxqLr36UEVxTbLcWhbHyvLF0rYoJAKwiype8NON4DQ==
+ninos@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/ninos/-/ninos-3.0.0.tgz#231a6d11eb624aeadc23be36f4cf951a79ad900f"
+  integrity sha512-y0PICjHqj7BCA04ayG0neJChSWt0oUKLtnDQZJu6ey+wtlpddQA1JwH0JtB6u+Q/Twkuz+pUIAZeZMHxUqgr4A==
 
 node-emoji@^1.4.1:
   version "1.10.0"
