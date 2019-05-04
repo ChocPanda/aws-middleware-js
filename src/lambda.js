@@ -45,6 +45,7 @@ const createErrorHandler = (errorMiddlewares, logger) => (
 	);
 	const middlewareRes = await reduceMiddlewares({
 		middlewares: errorMiddlewares,
+		logger,
 		errorHandler: err => {
 			throw err;
 		}
@@ -103,6 +104,7 @@ const createLambdaFunc = ({
 
 		const beforeResult = await reduceMiddlewares({
 			middlewares: preExMiddlewares,
+			logger,
 			errorHandler
 		})(event, context);
 
@@ -196,6 +198,7 @@ const createLambdaFunc = ({
 
 		const postMiddlewareRes = await reduceMiddlewares({
 			middlewares: postExMiddlewares,
+			logger,
 			errorHandler
 		})(result, modifiedEvent, modifiedContext);
 
