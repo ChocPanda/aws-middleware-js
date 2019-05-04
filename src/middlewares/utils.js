@@ -44,7 +44,9 @@ const normalizeErrorExecutionMiddleware = middleware => async (
 	return [newResult, newError, newEvent, newContext];
 };
 
-const reduceMiddlewares = ({ errorHandler, logger, middlewares }) => async (...args) =>
+const reduceMiddlewares = ({ errorHandler, logger, middlewares }) => async (
+	...args
+) =>
 	middlewares.reduce(async (currPromise, middleware) => {
 		const currResult = await currPromise;
 		logger.trace('Executing middleware, current parameters:', currResult);
