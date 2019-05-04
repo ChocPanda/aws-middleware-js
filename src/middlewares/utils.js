@@ -66,8 +66,17 @@ function ExtendedHttpError(...args) {
 
 ExtendedHttpError.prototype = Object.create(HttpError.prototype);
 
+const nullLogger = {
+	log: () => {},
+	info: () => {},
+	debug: () => {},
+	warn: () => {},
+	error: () => {}
+};
+
 module.exports.normalizePreExecutionMiddleware = normalizePreExecutionMiddleware;
 module.exports.normalizePostExecutionMiddleware = normalizePostExecutionMiddleware;
 module.exports.normalizeErrorExecutionMiddleware = normalizeErrorExecutionMiddleware;
 module.exports.reduceMiddlewares = reduceMiddlewares;
 module.exports.createHttpError = (...args) => new ExtendedHttpError(...args);
+module.exports.nullLogger = nullLogger;
