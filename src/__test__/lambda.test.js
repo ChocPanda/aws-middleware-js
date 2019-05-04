@@ -467,3 +467,34 @@ const useMiddlewareTestMacro = async (
 		'an error occured'
 	);
 });
+
+/**
+ * The Wrapped lambda function - withLogger
+ */
+
+test('...', async t => {
+	const stubHandler = () => 'result';
+	const stubLogger = {
+		info: t.context.stub(),
+		debug: t.context.stub(),
+		warn: t.context.stub(),
+		error: t.context.stub(),
+		trace: t.context.stub()
+	};
+	const stubMiddlewares = [{
+		before: () => {},
+		after: () => {},
+		onError: () => {}
+	}];
+
+	const lambdaFunc = lambda({
+		handler: stubHandler,
+		middlewares: stubMiddlewares
+	});
+
+	const updatedLambda = lambdaFunc.withLogger(stubLogger);
+
+	await updatedLambda('event', 'context');
+
+	Object.values(stubLogger).forEach(logger => t.snapshot(logger.calls));
+});

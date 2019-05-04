@@ -159,13 +159,15 @@ const createLambdaFunc = ({
 		 * middleware exitted by calling the callback or returned a value. The middleware
 		 * will use the flag to behave in the same way.
 		 */
-		const [{ callbackFlag = false, error }, result] = await new Promise(
-			resolve =>
-				resolve(
-					cachedHandler(modifiedEvent, modifiedContext, res =>
-						resolve([{ callbackFlag: true }, res])
-					)
+		const [
+			{ callbackFlag = false, error: executionError },
+			result
+		] = await new Promise(resolve =>
+			resolve(
+				cachedHandler(modifiedEvent, modifiedContext, res =>
+					resolve([{ callbackFlag: true }, res])
 				)
+			)
 		)
 			.then(res =>
 				Array.isArray(res) && res[0].callbackFlag ? res : [{}, res]
@@ -178,10 +180,10 @@ const createLambdaFunc = ({
 				return [{ error }, errorResult];
 			});
 
-		if (error) {
+		if (executionError) {
 			logger.error(
 				'Caught and handled an exception during the execution of the lambda function',
-				error
+				executionError
 			);
 			logger.info(
 				'Returning error response',

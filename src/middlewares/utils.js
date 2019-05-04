@@ -52,9 +52,11 @@ const nullLogger = {
 	trace: () => {}
 };
 
-const reduceMiddlewares = ({ errorHandler, middlewares, logger = nullLogger }) => async (
-	...args
-) =>
+const reduceMiddlewares = ({
+	errorHandler,
+	middlewares,
+	logger = nullLogger
+}) => async (...args) =>
 	middlewares.reduce(async (currPromise, middleware) => {
 		const currResult = await currPromise;
 		logger.trace('Executing middleware, current parameters:', currResult);
