@@ -1,6 +1,6 @@
 {
   "name": "aws-middleware-js",
-  "version": "2.0.1",
+  "version": "2.1.0",
   "description": "An opinionated Middleware and lifecycle framework for build AWS Lambdas",
   "main": "dist/index.js",
   "author": "ChocPanda",

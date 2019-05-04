@@ -1,3 +1,18 @@
+# [2.1.0](https://github.com/ChocPanda/aws-middleware-js/compare/v2.0.1...v2.1.0) (2019-05-04)
+
+
+### Bug Fixes
+
+* **logging:** Fix a failing unit test ([9545da7](https://github.com/ChocPanda/aws-middleware-js/commit/9545da7)), closes [#30](https://github.com/ChocPanda/aws-middleware-js/issues/30)
+
+
+### Features
+
+* **logging:** Add a logger to the lambda function ([db73155](https://github.com/ChocPanda/aws-middleware-js/commit/db73155)), closes [#30](https://github.com/ChocPanda/aws-middleware-js/issues/30)
+* **logging:** Add a Null Logger ([5308bb0](https://github.com/ChocPanda/aws-middleware-js/commit/5308bb0)), closes [#30](https://github.com/ChocPanda/aws-middleware-js/issues/30)
+* **logging:** Add a withLogger function ([a4e302e](https://github.com/ChocPanda/aws-middleware-js/commit/a4e302e)), closes [#30](https://github.com/ChocPanda/aws-middleware-js/issues/30)
+* **logging:** Add Trace logging to the reduce middlewares function ([a118bf8](https://github.com/ChocPanda/aws-middleware-js/commit/a118bf8)), closes [#30](https://github.com/ChocPanda/aws-middleware-js/issues/30)
+
 ## [2.0.1](https://github.com/ChocPanda/aws-middleware-js/compare/v2.0.0...v2.0.1) (2019-05-03)
 
 
