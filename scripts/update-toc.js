@@ -1,7 +1,7 @@
 const { resolve } = require('path');
 const { ls, exec } = require('shelljs');
 
-const tocCmd = 'yarn markdown-toc --no-firsth1 --bullets="-"'
+const tocCmd = 'yarn markdown-toc --no-firsth1 --bullets="-"';
 
 exec(`${tocCmd} -i ${resolve('./README.md')}`);
 

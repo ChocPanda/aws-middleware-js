@@ -1,4 +1,5 @@
-const { HTTPError, createHttpError } = require('../utils');
+const { HttpError } = require('http-errors');
+const { createHttpError } = require('../utils');
 
 const defaultResponseBody = ({ includeMessage }) => error =>
 	process.env.NODE_ENV === 'developement'
@@ -9,11 +10,11 @@ module.exports = ({
 	defaultStatus = 500,
 	createResponseBody = defaultResponseBody,
 	...responseBodyParams
-}) => {
+} = {}) => {
 	const responseBodyFn = createResponseBody(responseBodyParams);
 	return {
-		onError: (error, event = {}) => {
-			if (error instanceof HTTPError) {
+		onError: (event = {}, error) => {
+			if (error instanceof HttpError) {
 				return {
 					...event,
 					status: error.status,
