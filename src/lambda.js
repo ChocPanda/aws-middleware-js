@@ -230,9 +230,21 @@ const createLambdaFunc = ({
 		createLambdaFunc({
 			init,
 			handler,
+			logger,
 			middlewares: Array.isArray(newMiddlewares)
 				? newMiddlewares
 				: [newMiddlewares],
+			before: preExMiddlewares,
+			after: postExMiddlewares,
+			onError: errorMiddlewares
+		});
+
+	lambdaFunc.withLogger = logger =>
+		createLambdaFunc({
+			init,
+			handler,
+			logger,
+			middlewares: [],
 			before: preExMiddlewares,
 			after: postExMiddlewares,
 			onError: errorMiddlewares
