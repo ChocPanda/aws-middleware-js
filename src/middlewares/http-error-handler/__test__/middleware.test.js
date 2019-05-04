@@ -16,7 +16,9 @@ test('Http Error Handling Middleware - Should handle non-http-errors by transfor
 	t.snapshot(objUnderTest(undefined, error, 'event', 'context'));
 });
 
-test.todo('Http Error Handling Middleware - Should not include stack traces in production builds')
+test.todo(
+	'Http Error Handling Middleware - Should not include stack traces in production builds'
+);
 
 test.todo(
 	'Http Error Handling Middleware - Should handle include stack traces in dev builds'
