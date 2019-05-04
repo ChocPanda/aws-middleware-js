@@ -479,8 +479,11 @@ test('...', async t => {
 		debug: t.context.stub(),
 		warn: t.context.stub(),
 		error: t.context.stub(),
-		trace: t.context.stub()
+		trace: t.context.stub(),
+		group: t.context.stub(),
+		groupEnd: t.context.stub()
 	};
+
 	const stubMiddlewares = [
 		{
 			before: () => {},
