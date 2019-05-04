@@ -20,10 +20,12 @@ This project was inspired by [middy js](https://github.com/middyjs/middy), `a st
   - [Contents](#contents)
   - [Usage](#usage)
     - [API](#api)
-      - [Simple example using callbacks:](#simple-example-using-callbacks)
+      - [Simple example using callbacks](#simple-example-using-callbacks)
       - [Promises](#promises)
       - [Middlewares](#middlewares)
-    - [Lifecycle additions:](#lifecycle-additions)
+    - [Lifecycle additions](#lifecycle-additions)
+    - [Logging](#logging)
+      - [Logging API](#logging-api)
   - [Middleware](#middleware)
     - [Custom Middlewares](#custom-middlewares)
   - [AWS Middleware JS Lifecycle](#aws-middleware-js-lifecycle)
@@ -45,16 +47,16 @@ This project was inspired by [middy js](https://github.com/middyjs/middy), `a st
 
 aws-middleware-js fits seemlessly into the [programming model](https://docs.aws.amazon.com/lambda/latest/dg/nodejs-prog-model-handler.html) for writing AWS lambdas
 
-#### Simple example using callbacks:
+#### Simple example using callbacks
 
 ```javascript
 const lambda = require('aws-middleware-js')
 
-function myHandler(event, context, callback) {   
-  //... function code   
+function myHandler(event, context, callback) {
+  //... function code
   callback(null, "some success message");
-  // or 
-  // callback("some error type"); 
+  // or
+  // callback("some error type");
 }
 
 exports.handler = lambda(myHandler)
@@ -67,8 +69,8 @@ You can also use promises directly
 ```javascript
 const lambda = require('aws-middleware-js')
 
-function myAsyncHandler(event, context, callback) {   
-  //... function code   
+function myAsyncHandler(event, context, callback) {
+  //... function code
   const promise = foo(); // Some asynchronously executed code
   return promise
     .then(resultOfFoo => process(resultOfFoo))
@@ -86,8 +88,8 @@ and use async/await syntax
 ```javascript
 const lambda = require('aws-middleware-js')
 
-async function myAsyncHandler(event, context, callback) {   
-  //... function code   
+async function myAsyncHandler(event, context, callback) {
+  //... function code
   const foo = await bar(); // Some asynchronously executed code
   return someOperation(foo);
 }
@@ -104,7 +106,7 @@ const lambda = require('aws-middleware-js');
 const jsonBodyParser = require('aws-middleware-js/middlewares/json-body-parser');
 const httpErrorHandler = require('aws-middleware-js/middlewares/http-error-handler');
 
-async function myAsyncHandler(event, context, callback) {   
+async function myAsyncHandler(event, context, callback) {
   // All of this commented boiler-plate is made unnecessary simply by adding the the jsonBodyParser middleware and error handling middleware
   // try {
   //   const body = headers['Content-Type'] === 'application/json')
@@ -126,7 +128,7 @@ exports.handler = lambda(myAsyncHandler)
   .use(httpErrorHandler())
 ```
 
-### Lifecycle additions:
+### Lifecycle additions
 
 Currently this is just adding an initialisation step to the lambda function, aws-middleware-js lazily evaluates the resource and caches the result for [reuse of the execution enviroment](https://docs.aws.amazon.com/lambda/latest/dg/best-practices.html).
 
@@ -153,7 +155,40 @@ const myHandler = s3 => (event, context, callback) => {
   
 }
 
-exports.handler = lambda({ init: () => new AWS.S3(), handler: myAsyncHandler });
+exports.handler = lambda({ init: () => new AWS.S3(), handler: myHandler });
+```
+
+### Logging
+
+The LambdaFunc configuration object also accepts a logger parameter that will log progress and other helpful debug information. The logger need only expose **info**, **debug**, **warn**, **error** and **trace** functions of a similar signature to the built in [console logger](https://nodejs.org/api/console.html) making it compatible with other loggers such as [pinojs](https://github.com/pinojs/pino), [winstonjs](https://github.com/winstonjs/winston) or [signale](https://github.com/klaussinani/signale)
+
+#### Logging API
+
+Using console logging
+
+```javascript
+const lambda = require('aws-middleware-js');
+
+exports.handler = lambda({
+  logger: console,
+  handler: (event, context, callback) => {
+    // function code...
+  }
+});
+```
+
+But the console could be replaced with... [pinojs](https://github.com/pinojs/pino) (Or any other logger with a similar API)
+
+```javascript
+const lambda = require('aws-middleware-js');
+const pino = require('pino')();
+
+exports.handler = lambda({
+  logger: pino,
+  handler: (event, context, callback) => {
+    // function code...
+  }
+});
 ```
 
 ## Middleware
