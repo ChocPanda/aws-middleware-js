@@ -191,6 +191,8 @@ exports.handler = lambda({
 });
 ```
 
+*The logger must be set to be used.*
+
 ## Middleware
 
 - [JSON Body Parser](./src/middlewares/json-body-parser/README.md)

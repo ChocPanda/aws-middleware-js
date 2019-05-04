@@ -44,7 +44,15 @@ const normalizeErrorExecutionMiddleware = middleware => async (
 	return [newResult, newError, newEvent, newContext];
 };
 
-const reduceMiddlewares = ({ errorHandler, logger, middlewares }) => async (
+const nullLogger = {
+	info: () => {},
+	debug: () => {},
+	warn: () => {},
+	error: () => {},
+	trace: () => {}
+};
+
+const reduceMiddlewares = ({ errorHandler, middlewares, logger = nullLogger }) => async (
 	...args
 ) =>
 	middlewares.reduce(async (currPromise, middleware) => {
@@ -68,14 +76,6 @@ function ExtendedHttpError(...args) {
 }
 
 ExtendedHttpError.prototype = Object.create(HttpError.prototype);
-
-const nullLogger = {
-	info: () => {},
-	debug: () => {},
-	warn: () => {},
-	error: () => {},
-	trace: () => {}
-};
 
 module.exports.normalizePreExecutionMiddleware = normalizePreExecutionMiddleware;
 module.exports.normalizePostExecutionMiddleware = normalizePostExecutionMiddleware;
