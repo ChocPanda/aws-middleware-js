@@ -1,3 +1,10 @@
+# [2.2.0](https://github.com/ChocPanda/aws-middleware-js/compare/v2.1.0...v2.2.0) (2019-05-05)
+
+
+### Features
+
+* **error handler:** Implement basic HTTP Error handler ([cbfbd1e](https://github.com/ChocPanda/aws-middleware-js/commit/cbfbd1e)), closes [#14](https://github.com/ChocPanda/aws-middleware-js/issues/14)
+
 # [2.1.0](https://github.com/ChocPanda/aws-middleware-js/compare/v2.0.1...v2.1.0) (2019-05-04)
 
 
