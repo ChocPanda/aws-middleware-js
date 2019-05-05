@@ -1,8 +1,10 @@
 const { resolve } = require('path');
 const { ls, exec } = require('shelljs');
 
-exec(`yarn markdown-toc -i ${resolve('./README.md')}`);
+const tocCmd = 'yarn markdown-toc --no-firsth1 --bullets="-"'
+
+exec(`${tocCmd} -i ${resolve('./README.md')}`);
 
 ls('-R', 'src')
 	.filter(path => path.includes('README'))
-	.forEach(readme => exec(`yarn markdown-toc -i ${resolve('src', readme)}`));
+	.forEach(readme => exec(`${tocCmd} -i ${resolve('src', readme)}`));

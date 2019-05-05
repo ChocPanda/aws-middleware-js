@@ -6,7 +6,6 @@ An [aws-middleware-js](https://github.com/ChocPanda/aws-middleware-js) middlewar
 
 <!-- toc -->
 
-- [Example](#example)
 - [Usage](#usage)
 - [Configuration](#configuration)
 

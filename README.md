@@ -3,14 +3,30 @@
 ## CURRENTLY STILL A WORK IN PROGRESS
 
 <p align="center">
-  <a href="https://circleci.com/gh/ChocPanda/aws-middleware-js" alt="CircleCI"> <img src="https://img.shields.io/circleci/project/github/ChocPanda/aws-middleware-js/master.svg?style=popout"/></a>
-  <a href="https://codecov.io/gh/ChocPanda/aws-middleware-js" alt="codecov"> <img src="https://codecov.io/gh/ChocPanda/aws-middleware-js/branch/master/graph/badge.svg"/></a>
-  <a href="https://david-dm.org/ChocPanda/aws-middleware-js" alt="dependencies"> <img src="https://david-dm.org/ChocPanda/aws-middleware-js.svg"/></a>
-  <a href="https://github.com/ChocPanda/aws-middleware-js/blob/master/LICENSE" alt="license"> <img src="https://img.shields.io/github/license/ChocPanda/aws-middleware-js.svg?style=popout"/></a>
-  <a href="https://github.com/xojs/xo" alt="XO code style"><img src="https://img.shields.io/badge/code_style-XO-5ed9c7.svg"/></a>
-  <a href="http://commitizen.github.io/cz-cli/" alt="Commitizen friendly" ><img src="https://img.shields.io/badge/commitizen-friendly-brightgreen.svg"/></a>
-  <a href="https://github.com/semantic-release/semantic-release" alt="semantic-release"><img src="https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg"/></a>
-  <a href="https://greenkeeper.io/" alt="Greenkeeper badge" ><img src="https://badges.greenkeeper.io/ChocPanda/aws-middleware-js.svg"/></a>
+  <a href="https://circleci.com/gh/ChocPanda/aws-middleware-js" alt="CircleCI">
+    <img src="https://img.shields.io/circleci/project/github/ChocPanda/aws-middleware-js/master.svg?style=popout"/>
+  </a>
+  <a href="https://codecov.io/gh/ChocPanda/aws-middleware-js" alt="codecov">
+    <img src="https://codecov.io/gh/ChocPanda/aws-middleware-js/branch/master/graph/badge.svg"/>
+  </a>
+  <a href="https://david-dm.org/ChocPanda/aws-middleware-js" alt="dependencies">
+    <img src="https://david-dm.org/ChocPanda/aws-middleware-js.svg"/>
+  </a>
+  <a href="https://github.com/ChocPanda/aws-middleware-js/blob/master/LICENSE" alt="license">
+    <img src="https://img.shields.io/github/license/ChocPanda/aws-middleware-js.svg?style=popout"/>
+  </a>
+  <a href="https://github.com/xojs/xo" alt="XO code style">
+    <img src="https://img.shields.io/badge/code_style-XO-5ed9c7.svg"/>
+  </a>
+  <a href="http://commitizen.github.io/cz-cli/" alt="Commitizen friendly" >
+    <img src="https://img.shields.io/badge/commitizen-friendly-brightgreen.svg"/>
+  </a>
+  <a href="https://github.com/semantic-release/semantic-release" alt="semantic-release">
+    <img src="https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg"/>
+  </a>
+  <a href="https://greenkeeper.io/" alt="Greenkeeper badge" >
+    <img src="https://badges.greenkeeper.io/ChocPanda/aws-middleware-js.svg"/>
+  </a>
 </p>
 
 An opinionated Middleware and lifecycle framework for building service functions in AWS lambda functions.
@@ -23,28 +39,23 @@ This project was inspired by [middy js](https://github.com/middyjs/middy), `a st
 
 <!-- toc -->
 
-- [AWS-MIDDLEWARE-JS](#aws-middleware-js)
-  - [CURRENTLY STILL A WORK IN PROGRESS](#currently-still-a-work-in-progress)
-  - [Inspiration](#inspiration)
-  - [Contents](#contents)
-  - [Usage](#usage)
-    - [API](#api)
-      - [Simple example using callbacks](#simple-example-using-callbacks)
-      - [Promises](#promises)
-      - [Middlewares](#middlewares)
-    - [Lifecycle additions](#lifecycle-additions)
-    - [Logging](#logging)
-      - [Logging API](#logging-api)
-  - [Middleware](#middleware)
-    - [Custom Middlewares](#custom-middlewares)
-  - [AWS Middleware JS Lifecycle](#aws-middleware-js-lifecycle)
-  - [Why](#why)
-    - [Take advantage of Execution Context reuse to improve the performance of your function](#take-advantage-of-execution-context-reuse-to-improve-the-performance-of-your-function)
-    - [Reduce boilerplate for writing lambda functions](#reduce-boilerplate-for-writing-lambda-functions)
-  - [References](#references)
-  - [Notes](#notes)
-  - [Contributions](#contributions)
-    - [Conventional Commits](#conventional-commits)
+- [API](#api)
+  - [Simple example using callbacks](#simple-example-using-callbacks)
+  - [Promises](#promises)
+  - [Middlewares](#middlewares)
+- [Lifecycle additions](#lifecycle-additions)
+- [Logging](#logging)
+  - [Logging API](#logging-api)
+- [Middleware](#middleware)
+- [Custom Middlewares](#custom-middlewares)
+- [AWS Middleware JS Lifecycle](#aws-middleware-js-lifecycle)
+- [Why](#why)
+- [Take advantage of Execution Context reuse to improve the performance of your function](#take-advantage-of-execution-context-reuse-to-improve-the-performance-of-your-function)
+- [Reduce boilerplate for writing lambda functions](#reduce-boilerplate-for-writing-lambda-functions)
+- [References](#references)
+- [Notes](#notes)
+- [Contributions](#contributions)
+- [Conventional Commits](#conventional-commits)
 
 <!-- tocstop -->
 
