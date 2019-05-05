@@ -61,7 +61,7 @@ This project was inspired by [middy js](https://github.com/middyjs/middy), `a st
 
 ## Usage
 
-  [Coming soon...](https://github.com/ChocPanda/aws-middleware-js/issues/11)
+  [Coming soon...](https://github.com/ChocPanda/aws-middleware-js/milestone/1)
 
 ### API
 
