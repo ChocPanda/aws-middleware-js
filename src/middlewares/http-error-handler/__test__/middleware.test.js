@@ -18,7 +18,7 @@ test('Http Error Handling Middleware - Should handle non-http-errors by transfor
 
 test('Http Error Handling Middleware - Should not handle non-http-errors if there is no default status code', t => {
 	const error = new Error(`Couldn't find any bugs`);
-	const { onError: objUnderTest } = middleware({ defaultStatus: undefined });
+	const { onError: objUnderTest } = middleware({ defaultStatus: null });
 
 	t.snapshot(objUnderTest(undefined, error, 'event', 'context'));
 });
