@@ -59,7 +59,7 @@ const handler = (event, context, callback) => {
 	// My lambda function handler...
 };
 
-module.handler = lambda({ handler, middlewares: [
+module.exports.handler = lambda({ handler, middlewares: [
 	jsonParser({ assumeJson: false, deserialize: JSON.parse }) // These are default values for the config and therefore unnecessary
 ]});
 
@@ -78,7 +78,7 @@ const handler = (event, context, callback) => {
 
 const lambdaFunc = lambda(handler)
 
-module.handler = lambdaFunc.use(
+module.exports.handler = lambdaFunc.use(
 	jsonParser({ assumeJson: false, deserialize: JSON.parse }) // These are default values for the config and therefore unnecessary
 );
 
