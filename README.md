@@ -1,6 +1,6 @@
 # AWS-MIDDLEWARE-JS
 
-## MOVED TO [MAMBDA](https://github.com/ChocPanda/mambda)
+ <h1 align="center">MOVED TO <a href="https://github.com/ChocPanda/mambda">MAMBDA</a><h1>
 
 ----------------------------------------------------------------------------------------------------------------------------
 
