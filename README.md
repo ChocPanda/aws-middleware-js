@@ -2,6 +2,8 @@
 
 ## MOVED TO [MAMBDA](https://github.com/ChocPanda/mambda)
 
+----------------------------------------------------------------------------------------------------------------------------
+
 <p align="center">
   <a href="https://circleci.com/gh/ChocPanda/aws-middleware-js" alt="CircleCI">
     <img src="https://img.shields.io/circleci/project/github/ChocPanda/aws-middleware-js/master.svg?style=popout"/>
