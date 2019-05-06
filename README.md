@@ -1,6 +1,6 @@
 # AWS-MIDDLEWARE-JS
 
-## CURRENTLY STILL A WORK IN PROGRESS
+## MOVED TO [MAMBDA](https://github.com/ChocPanda/mambda)
 
 <p align="center">
   <a href="https://circleci.com/gh/ChocPanda/aws-middleware-js" alt="CircleCI">
